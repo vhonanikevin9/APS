@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS Calculator by QOUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f7f8fc;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        :root {
+            --brand-purple: #7c3aed;
+            --brand-blue: #2563eb;
+            --brand-teal: #14b8a6;
+        }
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        
+        /* Custom styles for searchable dropdown */
+        .subject-input-container { position: relative; z-index: 50; }
+        .subject-dropdown {
+            position: absolute;
+            bottom: calc(100% + 0.5rem); /* Position above the input */
+            background-color: white; border: 1px solid #e2e8f0; border-radius: 0.75rem;
+            width: 100%; max-height: 200px; overflow-y: auto; z-index: 1000;
+            box-shadow: 0 -10px 15px -3px rgba(0,0,0,0.07), 0 -4px 6px -2px rgba(0,0,0,0.05); /* Shadow adjusted for top position */
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .subject-dropdown-item { padding: 0.75rem 1rem; cursor: pointer; color: #334155; }
+        .subject-dropdown-item:hover { background-color: #f1f5f9; color: var(--brand-purple); }
+
+        /* University Card Styles */
+        .uni-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .uni-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .uni-card.selected {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 0 3px var(--brand-purple);
+            border-color: var(--brand-purple);
+        }
+
+        /* Animated Button */
+        .animated-btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 1;
+        }
+        .animated-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.4);
+        }
+         .animated-btn:active {
+            transform: scale(0.98);
+        }
+        #calculator-section {
+            position: relative;
+            z-index: 20; /* Ensures this section stacks above the uni selection */
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12 min-h-screen flex items-center justify-center">
+        <main class="w-full max-w-6xl mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl shadow-gray-300/20 p-6 md:p-10 border border-gray-200/80">
+            <!-- Header -->
+            <header class="text-center mb-10 fade-in">
+                <h1 class="text-5xl md:text-6xl font-black text-gray-900">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500">APS Calculator</span>
+                </h1>
+                <p class="text-lg text-gray-500 mt-2">by <span class="font-extrabold text-gray-700">QOUR</span></p>
+            </header>
+
+            <!-- University Selection -->
+            <section id="uni-selection" class="fade-in" style="animation-delay: 0.2s;">
+                <h2 class="text-xl font-bold text-center text-gray-700 mb-6">First, select your institution's group:</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 max-w-6xl mx-auto">
+                    <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="wits">
+                        <div class="mb-3">
+                            <h3 class="font-extrabold text-gray-800">Wits (Unique)</h3>
+                            <p class="text-xs text-gray-500">(Includes L.O. + Bonuses)</p>
+                        </div>
+                        <p class="text-xs text-purple-600 font-bold">University of the Witwatersrand</p>
+                    </div>
+                    <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="lo-excluded">
+                         <div class="mb-3">
+                            <h3 class="font-extrabold text-gray-800">Excludes L.O.</h3>
+                            <p class="text-xs text-gray-500">(6 Subjects)</p>
+                        </div>
+                        <p class="text-xs text-blue-600 font-bold">UP, UCT, NWU, UJ, UWC</p>
+                    </div>
+                     <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="distinct">
+                         <div class="mb-3">
+                            <h3 class="font-extrabold text-gray-800">Distinctive Models</h3>
+                            <p class="text-xs text-gray-500">(Universities of Tech)</p>
+                        </div>
+                        <p class="text-xs text-orange-600 font-bold">DUT, CPUT, TUT, RU</p>
+                    </div>
+                     <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="univen">
+                         <div class="mb-3">
+                            <h3 class="font-extrabold text-gray-800">Univen Decimal</h3>
+                            <p class="text-xs text-gray-500">Unique System</p>
+                        </div>
+                        <p class="text-xs text-yellow-600 font-bold">UNIVEN</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculator Section -->
+            <section id="calculator-section" class="mt-10 hidden">
+                <div class="max-w-4xl mx-auto bg-white/50 p-6 md:p-8 rounded-2xl border border-gray-200/80">
+                    <div class="text-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-700">Calculating for: <span id="uni-name-display" class="text-purple-600"></span></h2>
+                        <p id="uni-info-display" class="text-gray-500 text-sm mt-1"></p>
+                    </div>
+                    <div id="subjects-container" class="space-y-3">
+                        <!-- Subject rows injected by JS -->
+                    </div>
+                    <div class="flex items-center justify-between mt-8 flex-wrap gap-4">
+                        <button id="add-subject-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-5 rounded-lg transition duration-200">
+                            + Add Subject
+                        </button>
+                        <button id="calculate-aps-btn" class="animated-btn bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-12 rounded-lg text-lg shadow-lg shadow-purple-200">
+                            Calculate
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Result Section -->
+            <section id="result-section" class="mt-8 text-center hidden">
+                 <div id="aps-error" class="mb-4 text-red-500 font-semibold hidden"></div>
+                 <p class="text-xl text-gray-600">Your APS Score is:</p>
+                 <p id="aps-score" class="text-7xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 py-2"></p>
+                 <div class="mt-6 max-w-2xl mx-auto bg-gray-100 p-4 rounded-lg border">
+                    <h4 class="font-bold text-purple-700">Universities in this group:</h4>
+                    <p id="uni-list" class="text-gray-600 text-sm mt-2"></p>
+                 </div>
+                 <div class="mt-6">
+                     <button id="check-qualifications-btn" class="bg-gray-300 cursor-not-allowed text-gray-500 font-bold py-3 px-8 rounded-lg text-md" title="This feature is coming soon!">Check Possible Courses (Coming Soon)</button>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Qualifications Modal Removed -->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uniSelectionCards = document.querySelectorAll('.uni-card');
+            const calculatorSection = document.getElementById('calculator-section');
+            const resultSection = document.getElementById('result-section');
+            const uniNameDisplay = document.getElementById('uni-name-display');
+            const uniInfoDisplay = document.getElementById('uni-info-display');
+            const uniListDisplay = document.getElementById('uni-list');
+            const subjectsContainer = document.getElementById('subjects-container');
+            const addSubjectBtn = document.getElementById('add-subject-btn');
+            const calculateBtn = document.getElementById('calculate-aps-btn');
+            const errorDiv = document.getElementById('aps-error');
+            const scoreSpan = document.getElementById('aps-score');
+            
+            let currentGroup = 'wits';
+            let subjectRowCount = 0;
+            let finalAPS = 0;
+            let allSubjects = [];
+            let subjectDataStore = []; // To store data when switching groups
+
+            const uniData = {
+                'wits': { name: 'Wits (Unique System)', info: 'Calculates APS using your best 7 subjects, including L.O. and bonus points.', universities: 'University of the Witwatersrand', type: 'wits' },
+                'lo-excluded': { name: 'Universities Excluding L.O.', info: 'Calculates APS using your best 6 subjects, excluding Life Orientation.', universities: 'UP, UCT, NWU, UJ, UWC', type: '6-subject' },
+                'distinct': { name: 'Distinctive Models', info: 'Typically use the best 6 subjects, excluding Life Orientation. Always confirm with the institution.', universities: 'DUT, CPUT, TUT, Rhodes University (RU)', type: '6-subject' },
+                'univen': { name: 'Univen Decimal System', info: 'Calculates using your top 6 subjects (no LO) on a decimal scale.', universities: 'University of Venda (UNIVEN)', type: 'univen' }
+            };
+
+            uniSelectionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const existingRows = subjectsContainer.querySelectorAll('.grid');
+                    subjectDataStore = [];
+                    existingRows.forEach(row => {
+                        const nameInput = row.querySelector('.subject-search-input');
+                        const scoreInput = row.querySelector('.percentage-input');
+                        if (nameInput.value || scoreInput.value) {
+                            subjectDataStore.push({ name: nameInput.value, score: scoreInput.value });
+                        }
+                    });
+
+                    uniSelectionCards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    currentGroup = card.dataset.uni;
+                    
+                    uniNameDisplay.textContent = uniData[currentGroup].name;
+                    uniInfoDisplay.textContent = uniData[currentGroup].info;
+
+                    if (calculatorSection.classList.contains('hidden')) {
+                         calculatorSection.classList.remove('hidden');
+                         calculatorSection.classList.add('pop-in');
+                    }
+                    resultSection.classList.add('hidden');
+                    
+                    subjectsContainer.innerHTML = '';
+                    subjectRowCount = 0;
+                    let initialRows = (uniData[currentGroup].type === 'wits') ? 7 : 6;
+                    let rowsToCreate = Math.max(initialRows, subjectDataStore.length);
+
+                    for(let i = 0; i < rowsToCreate; i++) {
+                        const data = subjectDataStore[i] || { name: '', score: '' };
+                        createSubjectRow(data.name, data.score);
+                    }
+                    
+                    if (subjectDataStore.some(s => s.name && s.score)) {
+                        calculateAPS();
+                    }
+                });
+            });
+
+            const saSubjects = [ 'Accounting', 'Afrikaans First Additional Language', 'Afrikaans Home Language', 'Agricultural Management Practices', 'Agricultural Sciences', 'Agricultural Technology', 'Business Studies', 'Civil Technology', 'Computer Applications Technology', 'Consumer Studies', 'Dance Studies', 'Design', 'Dramatic Arts', 'Economics', 'Electrical Technology', 'Engineering Graphics and Design', 'English Home Language', 'English First Additional Language', 'Equine Studies', 'Geography', 'History', 'Hospitality Studies', 'Information Technology', 'IsiNdebele Home Language', 'IsiNdebele First Additional Language', 'IsiXhosa Home Language', 'IsiXhosa First Additional Language', 'IsiZulu Home Language', 'IsiZulu First Additional Language', 'Life Orientation', 'Life Sciences', 'Maritime Economics', 'Mathematical Literacy', 'Mathematics', 'Mechanical Technology', 'Music', 'Nautical Science', 'Physical Sciences', 'Religion Studies', 'Sepedi Home Language', 'Sepedi First Additional Language', 'Sesotho Home Language', 'Sesotho First Additional Language', 'Setswana Home Language', 'Setswana First Additional Language', 'Sign Language Home Language', 'Siswati Home Language', 'Siswati First Additional Language', 'South African Sign Language', 'Sport and Exercise Science', 'Technical Mathematics', 'Technical Sciences', 'Tourism', 'Tshivenḓa Home Language', 'Tshivenḓa First Additional Language', 'Visual Arts', 'Xitsonga Home Language', 'Xitsonga First Additional Language' ];
+            saSubjects.sort();
+
+            function createSubjectRow(initialName = '', initialScore = '') {
+                if (subjectRowCount >= 11) return;
+                subjectRowCount++;
+                
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-12 gap-2 items-center fade-in';
+                row.innerHTML = `
+                    <div class="col-span-8 subject-input-container">
+                        <input type="text" value="${initialName}" placeholder="Select a subject..." class="subject-search-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition">
+                        <div class="subject-dropdown hidden"></div>
+                    </div>
+                    <div class="col-span-3">
+                        <input type="number" value="${initialScore}" min="0" max="100" class="percentage-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition" placeholder="%">
+                    </div>
+                    <div class="col-span-1 text-right">
+                        <button class="remove-subject-btn text-gray-400 hover:text-red-500 p-1 rounded-full transition">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                        </button>
+                    </div>
+                `;
+                subjectsContainer.appendChild(row);
+                
+                const percentageInput = row.querySelector('.percentage-input');
+                percentageInput.addEventListener('input', (e) => {
+                    if (e.target.value) {
+                        let value = parseInt(e.target.value, 10);
+                        if (value > 100) e.target.value = 100;
+                        else if (value < 0) e.target.value = 0;
+                    }
+                });
+                
+                setupSearchableDropdown(row);
+            }
+
+            function setupSearchableDropdown(row) {
+                const searchInput = row.querySelector('.subject-search-input');
+                const dropdown = row.querySelector('.subject-dropdown');
+                function filterSubjects(searchTerm) {
+                    dropdown.innerHTML = '';
+                    saSubjects.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase())).forEach(subject => {
+                        const item = document.createElement('div');
+                        item.className = 'subject-dropdown-item';
+                        item.textContent = subject;
+                        item.addEventListener('click', () => {
+                            searchInput.value = subject;
+                            dropdown.classList.add('hidden');
+                        });
+                        dropdown.appendChild(item);
+                    });
+                }
+                searchInput.addEventListener('focus', () => { filterSubjects(searchInput.value); dropdown.classList.remove('hidden'); });
+                searchInput.addEventListener('input', () => { filterSubjects(searchInput.value); dropdown.classList.remove('hidden'); });
+                document.addEventListener('click', (e) => { if (!row.contains(e.target)) dropdown.classList.add('hidden'); });
+            }
+
+            subjectsContainer.addEventListener('click', (e) => {
+                if (e.target.closest('.remove-subject-btn')) {
+                    e.target.closest('.grid').remove();
+                    subjectRowCount--;
+                }
+            });
+
+            addSubjectBtn.addEventListener('click', () => createSubjectRow());
+
+            const APS_SCALE_STANDARD = { 80: 7, 70: 6, 60: 5, 50: 4, 40: 3, 30: 2, 0: 1 };
+            const APS_SCALE_WITS = { 90: 8, 80: 7, 70: 6, 60: 5, 50: 4, 40: 3, 0: 0 };
+            
+            function getApsPoint(p, scale) {
+                const keys = Object.keys(scale).map(Number).sort((a,b) => b-a);
+                for(const key of keys) { if (p >= key) return scale[key]; }
+                return 0;
+            }
+
+            function calculateAPS() {
+                const subjectRows = subjectsContainer.querySelectorAll('.grid');
+                allSubjects = [];
+                resultSection.classList.add('hidden');
+                errorDiv.classList.add('hidden');
+
+                subjectRows.forEach(row => {
+                    const name = row.querySelector('.subject-search-input').value;
+                    const score = parseInt(row.querySelector('.percentage-input').value);
+                    if (name && !isNaN(score) && score >= 0 && score <= 100) { allSubjects.push({ name, score }); }
+                });
+                
+                let subjectsForCalc;
+                const modelType = uniData[currentGroup].type;
+                
+                switch(modelType) {
+                    case 'univen':
+                        subjectsForCalc = allSubjects.filter(s => s.name.toLowerCase() !== 'life orientation');
+                        if (subjectsForCalc.length < 6) { errorDiv.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; errorDiv.classList.remove('hidden'); return; }
+                        subjectsForCalc.sort((a, b) => b.score - a.score);
+                        finalAPS = subjectsForCalc.slice(0, 6).reduce((sum, s) => {
+                            return sum + (s.score >= 40 ? (s.score / 10) : 0);
+                        }, 0).toFixed(1);
+                        break;
+                    
+                    case 'wits':
+                        if (allSubjects.length < 7) { errorDiv.textContent = 'Please enter at least 7 valid subjects for this model.'; errorDiv.classList.remove('hidden'); return; }
+                        finalAPS = 0;
+                        allSubjects.sort((a, b) => b.score - a.score);
+                        const top7Wits = allSubjects.slice(0, 7);
+
+                        top7Wits.forEach(s => {
+                            let subjectPoints = 0;
+                            // Calculate points based on subject type
+                            if (s.name.toLowerCase() === 'life orientation') {
+                                if (s.score >= 90) subjectPoints = 4;
+                                else if (s.score >= 80) subjectPoints = 3;
+                                else if (s.score >= 70) subjectPoints = 2;
+                                else if (s.score >= 60) subjectPoints = 1;
+                                // Below 60 for LO is 0 points, which is the default
+                            } else {
+                                // Regular subject point calculation
+                                subjectPoints = getApsPoint(s.score, APS_SCALE_WITS);
+                                
+                                // Add bonus points for English and Maths
+                                if (s.name.includes('English') && s.score >= 60) {
+                                    subjectPoints += 2;
+                                }
+                                if (s.name.includes('Mathematics') && s.score >= 60) {
+                                    subjectPoints += 2;
+                                }
+                            }
+                            finalAPS += subjectPoints;
+                        });
+                        break;
+                    
+                    case '6-subject':
+                    default:
+                        subjectsForCalc = allSubjects.filter(s => s.name.toLowerCase() !== 'life orientation');
+                        if (subjectsForCalc.length < 6) { errorDiv.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; errorDiv.classList.remove('hidden'); return; }
+                        subjectsForCalc.sort((a, b) => b.score - a.score);
+                        finalAPS = subjectsForCalc.slice(0, 6).reduce((sum, s) => sum + getApsPoint(s.score, APS_SCALE_STANDARD), 0);
+                        break;
+                }
+                
+                scoreSpan.textContent = finalAPS;
+                uniListDisplay.textContent = uniData[currentGroup].universities;
+                resultSection.classList.remove('hidden');
+                resultSection.classList.add('pop-in');
+            }
+            
+            calculateBtn.addEventListener('click', calculateAPS);
+
+        });
+    </script>
+</body>
+</html>
+
+
+
+
