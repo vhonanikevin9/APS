@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APS Calculator by QOUR</title>
+    <title>APS Calculator by QOUR | Professional Grade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #f7f8fc;
-            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            background-image: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
         }
         :root {
-            --brand-purple: #7c3aed;
-            --brand-blue: #2563eb;
-            --brand-teal: #14b8a6;
+            --brand-primary: #4f46e5;
+            --brand-secondary: #7c3aed;
+            --brand-accent: #0ea5e9;
+            --brand-success: #10b981;
         }
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -36,7 +39,7 @@
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
         .subject-dropdown-item { padding: 0.75rem 1rem; cursor: pointer; color: #334155; }
-        .subject-dropdown-item:hover { background-color: #f1f5f9; color: var(--brand-purple); }
+        .subject-dropdown-item:hover { background-color: #f1f5f9; color: var(--brand-primary); }
 
         /* University Card Styles */
         .uni-card {
@@ -52,8 +55,8 @@
         }
         .uni-card.selected {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 0 3px var(--brand-purple);
-            border-color: var(--brand-purple);
+            box-shadow: 0 0 0 3px var(--brand-primary);
+            border-color: var(--brand-primary);
         }
 
         /* Animated Button */
@@ -65,7 +68,7 @@
         }
         .animated-btn:hover {
             transform: scale(1.03);
-            box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
         }
          .animated-btn:active {
             transform: scale(0.98);
@@ -82,94 +85,189 @@
         .modal-content {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
+        
+        /* Professional enhancements */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-active {
+            background-color: var(--brand-success);
+        }
+        .status-inactive {
+            background-color: #94a3b8;
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
     <div class="container mx-auto px-4 py-8 md:py-12 min-h-screen flex items-center justify-center">
-        <main class="w-full max-w-6xl mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl shadow-gray-300/20 p-6 md:p-10 border border-gray-200/80">
+        <main class="w-full max-w-6xl mx-auto glass-effect rounded-2xl card-shadow p-6 md:p-10">
             <!-- Header -->
             <header class="text-center mb-10 fade-in">
-                <h1 class="text-5xl md:text-6xl font-black text-gray-900">
-                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500">APS Calculator</span>
-                </h1>
-                <p class="text-lg text-gray-500 mt-2">by <span class="font-extrabold text-gray-700">QOUR</span></p>
+                <div class="flex justify-center items-center mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-calculator text-indigo-600"></i>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-black text-gray-900">
+                        <span class="gradient-text">APS Calculator</span>
+                    </h1>
+                </div>
+                <p class="text-lg text-gray-500">by <span class="font-semibold text-gray-700">QOUR</span> <span class="status-indicator status-active"></span></p>
+                <div class="mt-4 max-w-2xl mx-auto text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                    <i class="fas fa-info-circle text-indigo-500 mr-1"></i>
+                    Calculate your Admission Point Score for South African universities
+                </div>
             </header>
 
             <!-- University Selection -->
             <section id="uni-selection" class="fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-xl font-bold text-center text-gray-700 mb-6">First, select your institution's group:</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 max-w-6xl mx-auto">
-                    <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="wits">
-                        <div class="mb-3">
-                            <h3 class="font-extrabold text-gray-800">Wits (Unique)</h3>
-                            <p class="text-xs text-gray-500">(Includes L.O. + Bonuses)</p>
+                <h2 class="text-xl font-bold text-center text-gray-700 mb-6">
+                    <i class="fas fa-university mr-2 text-indigo-500"></i>Select Your Institution Group
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-6xl mx-auto">
+                    <div class="uni-card glass-effect p-5 rounded-xl card-shadow cursor-pointer" data-uni="wits">
+                        <div class="flex items-start mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-star text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">Wits (Unique)</h3>
+                                <p class="text-xs text-gray-500 mt-1">Includes L.O. + Bonuses</p>
+                            </div>
                         </div>
-                        <p class="text-xs text-purple-600 font-bold">University of the Witwatersrand</p>
+                        <p class="text-xs text-purple-600 font-medium mt-2">University of the Witwatersrand</p>
                     </div>
-                    <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="lo-excluded">
-                         <div class="mb-3">
-                            <h3 class="font-extrabold text-gray-800">Excludes L.O.</h3>
-                            <p class="text-xs text-gray-500">(6 Subjects)</p>
+                    <div class="uni-card glass-effect p-5 rounded-xl card-shadow cursor-pointer" data-uni="lo-excluded">
+                         <div class="flex items-start mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-chart-bar text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">Excludes L.O.</h3>
+                                <p class="text-xs text-gray-500 mt-1">6 Subjects</p>
+                            </div>
                         </div>
-                        <p class="text-xs text-blue-600 font-bold">UP, UCT, NWU, UJ, UWC</p>
+                        <p class="text-xs text-blue-600 font-medium mt-2">UP, UCT, NWU, UJ, UWC</p>
                     </div>
-                     <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="distinct">
-                         <div class="mb-3">
-                            <h3 class="font-extrabold text-gray-800">Distinctive Models</h3>
-                            <p class="text-xs text-gray-500">(Universities of Tech)</p>
+                     <div class="uni-card glass-effect p-5 rounded-xl card-shadow cursor-pointer" data-uni="distinct">
+                         <div class="flex items-start mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-cogs text-orange-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">Distinctive Models</h3>
+                                <p class="text-xs text-gray-500 mt-1">Universities of Technology</p>
+                            </div>
                         </div>
-                        <p class="text-xs text-orange-600 font-bold">DUT, CPUT, TUT, RU</p>
+                        <p class="text-xs text-orange-600 font-medium mt-2">DUT, CPUT, TUT, RU</p>
                     </div>
-                     <div class="uni-card bg-white p-5 rounded-2xl shadow-md cursor-pointer text-center" data-uni="univen">
-                         <div class="mb-3">
-                            <h3 class="font-extrabold text-gray-800">Univen Decimal</h3>
-                            <p class="text-xs text-gray-500">Unique System</p>
+                     <div class="uni-card glass-effect p-5 rounded-xl card-shadow cursor-pointer" data-uni="univen">
+                         <div class="flex items-start mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-square-root-alt text-amber-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">Univen Decimal</h3>
+                                <p class="text-xs text-gray-500 mt-1">Unique System</p>
+                            </div>
                         </div>
-                        <p class="text-xs text-yellow-600 font-bold">UNIVEN</p>
+                        <p class="text-xs text-amber-600 font-medium mt-2">UNIVEN</p>
                     </div>
                 </div>
             </section>
 
             <!-- Calculator Section -->
             <section id="calculator-section" class="mt-10 hidden">
-                <div class="max-w-4xl mx-auto bg-white/50 p-6 md:p-8 rounded-2xl border border-gray-200/80">
+                <div class="max-w-4xl mx-auto glass-effect p-6 md:p-8 rounded-xl card-shadow">
                     <div class="text-center mb-6">
-                        <h2 class="text-xl font-bold text-gray-700">Calculating for: <span id="uni-name-display" class="text-purple-600"></span></h2>
-                        <p id="uni-info-display" class="text-gray-500 text-sm mt-1"></p>
+                        <h2 class="text-xl font-bold text-gray-700">
+                            <i class="fas fa-calculator mr-2 text-indigo-500"></i>
+                            Calculating for: <span id="uni-name-display" class="text-indigo-600"></span>
+                        </h2>
+                        <p id="uni-info-display" class="text-gray-500 text-sm mt-1 bg-indigo-50 p-2 rounded-lg inline-block"></p>
                     </div>
+                    
+                    <div class="mb-4 flex justify-between items-center">
+                        <h3 class="font-semibold text-gray-700">
+                            <i class="fas fa-book-open mr-2 text-indigo-500"></i>
+                            Subjects & Grades
+                        </h3>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            <span id="subject-count">0</span> subjects added
+                        </span>
+                    </div>
+                    
                     <div id="subjects-container" class="space-y-3">
                         <!-- Subject rows injected by JS -->
                     </div>
                     <div class="flex items-center justify-between mt-8 flex-wrap gap-4">
-                        <button id="add-subject-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-5 rounded-lg transition duration-200">
-                            + Add Subject
+                        <button id="add-subject-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2.5 px-5 rounded-lg transition duration-200 flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Subject
                         </button>
-                        <button id="calculate-aps-btn" class="animated-btn bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-12 rounded-lg text-lg shadow-lg shadow-purple-200">
-                            Calculate
-                        </button>
+                        <div class="flex items-center">
+                            <button id="reset-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2.5 px-5 rounded-lg transition duration-200 mr-3 flex items-center">
+                                <i class="fas fa-redo mr-2"></i> Reset
+                            </button>
+                            <button id="calculate-aps-btn" class="animated-btn bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-semibold py-3 px-12 rounded-lg text-lg shadow-lg shadow-indigo-200 flex items-center">
+                                <i class="fas fa-calculator mr-2"></i> Calculate APS
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
             
             <!-- Result Section -->
             <section id="result-section" class="mt-8 text-center hidden">
-                 <div id="aps-error" class="mb-4 text-red-500 font-semibold hidden"></div>
-                 <p class="text-xl text-gray-600">Your APS Score is:</p>
-                 <p id="aps-score" class="text-7xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 py-2"></p>
-                 <div class="mt-6 max-w-2xl mx-auto bg-gray-100 p-4 rounded-lg border">
-                    <h4 class="font-bold text-purple-700">Universities in this group:</h4>
-                    <p id="uni-list" class="text-gray-600 text-sm mt-2"></p>
+                 <div id="aps-error" class="mb-4 text-red-500 font-semibold hidden bg-red-50 p-3 rounded-lg">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span id="error-text"></span>
                  </div>
-                 <div class="mt-6">
-                     <button id="check-qualifications-btn" class="bg-gray-300 cursor-not-allowed text-gray-500 font-bold py-3 px-8 rounded-lg text-md" title="This feature is coming soon!">Check Possible Courses (Coming Soon)</button>
+                 <div class="glass-effect p-6 rounded-xl card-shadow max-w-2xl mx-auto">
+                     <p class="text-xl text-gray-600 mb-2">Your Admission Point Score</p>
+                     <p id="aps-score" class="text-7xl md:text-8xl font-black gradient-text py-2"></p>
+                     <div class="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-indigo-700 flex items-center justify-center">
+                            <i class="fas fa-university mr-2"></i>
+                            Universities in this group
+                        </h4>
+                        <p id="uni-list" class="text-gray-600 text-sm mt-2"></p>
+                     </div>
+                     <div class="mt-6 flex justify-center">
+                         <button id="check-qualifications-btn" class="bg-gray-100 cursor-not-allowed text-gray-500 font-medium py-3 px-8 rounded-lg text-md flex items-center" title="This feature is coming soon!">
+                            <i class="fas fa-graduation-cap mr-2"></i>
+                            Check Course Eligibility (Coming Soon)
+                         </button>
+                     </div>
                  </div>
             </section>
+            
+            <!-- Footer -->
+            <footer class="mt-12 text-center text-gray-500 text-sm">
+                <div class="border-t border-gray-200 pt-6">
+                    <p>© 2023 QOUR APS Calculator. All rights reserved.</p>
+                    <p class="mt-2">For accurate admission requirements, always consult the official university websites.</p>
+                </div>
+            </footer>
         </main>
     </div>
-
-    <!-- Qualifications Modal Removed -->
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -180,9 +278,12 @@
             const uniInfoDisplay = document.getElementById('uni-info-display');
             const uniListDisplay = document.getElementById('uni-list');
             const subjectsContainer = document.getElementById('subjects-container');
+            const subjectCountSpan = document.getElementById('subject-count');
             const addSubjectBtn = document.getElementById('add-subject-btn');
+            const resetBtn = document.getElementById('reset-btn');
             const calculateBtn = document.getElementById('calculate-aps-btn');
             const errorDiv = document.getElementById('aps-error');
+            const errorText = document.getElementById('error-text');
             const scoreSpan = document.getElementById('aps-score');
             
             let currentGroup = 'wits';
@@ -233,6 +334,8 @@
                         createSubjectRow(data.name, data.score);
                     }
                     
+                    updateSubjectCount();
+                    
                     if (subjectDataStore.some(s => s.name && s.score)) {
                         calculateAPS();
                     }
@@ -250,15 +353,15 @@
                 row.className = 'grid grid-cols-12 gap-2 items-center fade-in';
                 row.innerHTML = `
                     <div class="col-span-8 subject-input-container">
-                        <input type="text" value="${initialName}" placeholder="Select a subject..." class="subject-search-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition">
+                        <input type="text" value="${initialName}" placeholder="Select a subject..." class="subject-search-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition">
                         <div class="subject-dropdown hidden"></div>
                     </div>
                     <div class="col-span-3">
-                        <input type="number" value="${initialScore}" min="0" max="100" class="percentage-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition" placeholder="%">
+                        <input type="number" value="${initialScore}" min="0" max="100" class="percentage-input w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="%">
                     </div>
                     <div class="col-span-1 text-right">
                         <button class="remove-subject-btn text-gray-400 hover:text-red-500 p-1 rounded-full transition">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                           <i class="fas fa-times"></i>
                         </button>
                     </div>
                 `;
@@ -271,9 +374,11 @@
                         if (value > 100) e.target.value = 100;
                         else if (value < 0) e.target.value = 0;
                     }
+                    updateSubjectCount();
                 });
                 
                 setupSearchableDropdown(row);
+                updateSubjectCount();
             }
 
             function setupSearchableDropdown(row) {
@@ -288,6 +393,7 @@
                         item.addEventListener('click', () => {
                             searchInput.value = subject;
                             dropdown.classList.add('hidden');
+                            updateSubjectCount();
                         });
                         dropdown.appendChild(item);
                     });
@@ -297,14 +403,38 @@
                 document.addEventListener('click', (e) => { if (!row.contains(e.target)) dropdown.classList.add('hidden'); });
             }
 
+            function updateSubjectCount() {
+                const validSubjects = Array.from(subjectsContainer.querySelectorAll('.grid')).filter(row => {
+                    const name = row.querySelector('.subject-search-input').value;
+                    const score = row.querySelector('.percentage-input').value;
+                    return name && score && !isNaN(parseInt(score));
+                }).length;
+                
+                subjectCountSpan.textContent = validSubjects;
+            }
+
             subjectsContainer.addEventListener('click', (e) => {
                 if (e.target.closest('.remove-subject-btn')) {
                     e.target.closest('.grid').remove();
                     subjectRowCount--;
+                    updateSubjectCount();
                 }
             });
 
             addSubjectBtn.addEventListener('click', () => createSubjectRow());
+            
+            resetBtn.addEventListener('click', () => {
+                subjectsContainer.innerHTML = '';
+                subjectRowCount = 0;
+                resultSection.classList.add('hidden');
+                updateSubjectCount();
+                
+                // Recreate initial rows based on current selection
+                let initialRows = (uniData[currentGroup].type === 'wits') ? 7 : 6;
+                for(let i = 0; i < initialRows; i++) {
+                    createSubjectRow();
+                }
+            });
 
             const APS_SCALE_STANDARD = { 80: 7, 70: 6, 60: 5, 50: 4, 40: 3, 30: 2, 0: 1 };
             const APS_SCALE_WITS = { 90: 8, 80: 7, 70: 6, 60: 5, 50: 4, 40: 3, 0: 0 };
@@ -324,7 +454,9 @@
                 subjectRows.forEach(row => {
                     const name = row.querySelector('.subject-search-input').value;
                     const score = parseInt(row.querySelector('.percentage-input').value);
-                    if (name && !isNaN(score) && score >= 0 && score <= 100) { allSubjects.push({ name, score }); }
+                    if (name && !isNaN(score) && score >= 0 && score <= 100) { 
+                        allSubjects.push({ name, score }); 
+                    }
                 });
                 
                 let subjectsForCalc;
@@ -333,7 +465,11 @@
                 switch(modelType) {
                     case 'univen':
                         subjectsForCalc = allSubjects.filter(s => s.name.toLowerCase() !== 'life orientation');
-                        if (subjectsForCalc.length < 6) { errorDiv.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; errorDiv.classList.remove('hidden'); return; }
+                        if (subjectsForCalc.length < 6) { 
+                            errorText.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; 
+                            errorDiv.classList.remove('hidden'); 
+                            return; 
+                        }
                         subjectsForCalc.sort((a, b) => b.score - a.score);
                         finalAPS = subjectsForCalc.slice(0, 6).reduce((sum, s) => {
                             return sum + (s.score >= 40 ? (s.score / 10) : 0);
@@ -341,7 +477,11 @@
                         break;
                     
                     case 'wits':
-                        if (allSubjects.length < 7) { errorDiv.textContent = 'Please enter at least 7 valid subjects for this model.'; errorDiv.classList.remove('hidden'); return; }
+                        if (allSubjects.length < 7) { 
+                            errorText.textContent = 'Please enter at least 7 valid subjects for this model.'; 
+                            errorDiv.classList.remove('hidden'); 
+                            return; 
+                        }
                         finalAPS = 0;
                         allSubjects.sort((a, b) => b.score - a.score);
                         const top7Wits = allSubjects.slice(0, 7);
@@ -374,7 +514,11 @@
                     case '6-subject':
                     default:
                         subjectsForCalc = allSubjects.filter(s => s.name.toLowerCase() !== 'life orientation');
-                        if (subjectsForCalc.length < 6) { errorDiv.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; errorDiv.classList.remove('hidden'); return; }
+                        if (subjectsForCalc.length < 6) { 
+                            errorText.textContent = 'Please enter at least 6 valid subjects (excluding Life Orientation).'; 
+                            errorDiv.classList.remove('hidden'); 
+                            return; 
+                        }
                         subjectsForCalc.sort((a, b) => b.score - a.score);
                         finalAPS = subjectsForCalc.slice(0, 6).reduce((sum, s) => sum + getApsPoint(s.score, APS_SCALE_STANDARD), 0);
                         break;
@@ -392,7 +536,6 @@
     </script>
 </body>
 </html>
-
 
 
 
