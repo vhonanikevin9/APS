@@ -1,624 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APS Score Calculator - Free Online APS Score for South African Universities</title>
-    <meta name="description" content="Free Online APS Score Calculator for South African Universities - Calculate your Admission Point Score for Wits, UP, UCT, UJ, NWU, and more. Easy to use with all SA high school subjects.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Fredoka One', cursive;
-            background: #f0f9ff;
-            color: #1e3a8a;
-        }
-        /* Bouncy animations */
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            70% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes slideInUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .pop-in { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        .slide-in-up { animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZRZSZ1D54E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        .category-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 4px solid #1e3a8a;
-        }
-        .category-card:hover {
-            transform: translateY(-10px) rotate(3deg);
-            box-shadow: 10px 10px 0px #1e3a8a;
-        }
-        .category-card:active {
-            transform: translateY(-2px) rotate(1deg);
-            box-shadow: 2px 2px 0px #1e3a8a;
-        }
+  gtag('config', 'G-ZRZSZ1D54E');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS Score Calculator - Free Online APS Score for South African Universities</title>
+    <meta name="description" content="Free Online APS Score Calculator for South African Universities - Calculate your Admission Point Score for Wits, UP, UCT, UJ, NWU, and more. Easy to use with all SA high school subjects.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: #f0f9ff;
+            color: #1e3a8a;
+        }
+        /* Bouncy animations */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .slide-in-up { animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        .converter-input {
-            font-size: 1.5rem;
-            font-family: 'Fredoka One', cursive;
-            border: 4px solid #1e3a8a;
-            box-shadow: 6px 6px 0px #1e3a8a;
-            transition: box-shadow 0.2s ease;
-        }
-        .converter-input:focus {
-            outline: none;
-            box-shadow: 2px 2px 0px #1e3a8a;
-        }
-        .unit-select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            border: 4px solid #1e3a8a;
-            box-shadow: 6px 6px 0px #1e3a8a;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24' fill='none' stroke='%231e3a8a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1.5em;
-        }
-        .subject-dropdown {
-            position: absolute;
-            bottom: 100%;
-            left: 0;
-            right: 0;
-            background-color: white; 
-            border: 4px solid #1e3a8a;
-            border-radius: 0.75rem;
-            width: 100%; 
-            max-height: 200px; 
-            overflow-y: auto; 
-            z-index: 1000;
-            box-shadow: 6px 6px 0px #1e3a8a;
-        }
-        .subject-dropdown-item { 
-            padding: 0.75rem 1rem; 
-            cursor: pointer; 
-            color: #1e3a8a;
-            border-bottom: 2px solid #f0f9ff;
-        }
-        .subject-dropdown-item:hover { 
-            background-color: #dbeafe; 
-        }
-        .subject-input-container { 
-            position: relative; 
-            z-index: 50; 
-        }
-        .mark-input {
-            font-size: 1.5rem;
-            font-family: 'Fredoka One', cursive;
-            border: 4px solid #1e3a8a;
-            box-shadow: 6px 6px 0px #1e3a8a;
-            transition: box-shadow 0.2s ease;
-        }
-        .mark-input:focus {
-            outline: none;
-            box-shadow: 2px 2px 0px #1e3a8a;
-        }
-    </style>
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 4px solid #1e3a8a;
+        }
+        .category-card:hover {
+            transform: translateY(-10px) rotate(3deg);
+            box-shadow: 10px 10px 0px #1e3a8a;
+        }
+        .category-card:active {
+            transform: translateY(-2px) rotate(1deg);
+            box-shadow: 2px 2px 0px #1e3a8a;
+        }
+
+        .converter-input {
+            font-size: 1.5rem;
+            font-family: 'Fredoka One', cursive;
+            border: 4px solid #1e3a8a;
+            box-shadow: 6px 6px 0px #1e3a8a;
+            transition: box-shadow 0.2s ease;
+        }
+        .converter-input:focus {
+            outline: none;
+            box-shadow: 2px 2px 0px #1e3a8a;
+        }
+        .unit-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+      _       border: 4px solid #1e3a8a;
+            box-shadow: 6px 6px 0px #1e3a8a;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24' fill='none' stroke='%231e3a8a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em;
+        }
+        .subject-dropdown {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background-color: white; 
+            border: 4px solid #1e3a8a;
+            border-radius: 0.75rem;
+            width: 100%; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            z-index: 1000;
+            box-shadow: 6px 6px 0px #1e3a8a;
+        }
+        .subject-dropdown-item { 
+            padding: 0.75rem 1rem; 
+            cursor: pointer; 
+            color: #1e3a8a;
+            border-bottom: 2px solid #f0f9ff;
+        }
+        .subject-dropdown-item:hover { 
+            background-color: #dbeafe; 
+        }
+        .subject-input-container { 
+            position: relative; 
+            z-index: 50; 
+        }
+        .mark-input {
+            font-size: 1.5rem;
+            font-family: 'Fredoka One', cursive;
+            border: 4px solid #1e3a8a;
+            box-shadow: 6px 6px 0px #1e3a8a;
+            transition: box-shadow 0.2s ease;
+        }
+        .mark-input:focus {
+            outline: none;
+            box-shadow: 2px 2px 0px #1e3a8a;
+        }
+    </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <main id="app-container" class="w-full max-w-6xl mx-auto">
-        <!-- Home Screen: University Group Selection -->
-        <div id="home-screen">
-            <header class="text-center mb-10 pop-in">
-                <h1 class="text-5xl md:text-7xl font-bold tracking-wider">APS SCORE</h1>
-                <p class="text-xl text-blue-800 mt-2">Free Online APS Score for South African Universities</p>
-                <div class="mt-4 max-w-3xl mx-auto text-left text-sm text-blue-700 bg-white/70 p-5 rounded-lg border-4 border-blue-900 shadow-[6px_6px_0px_#1e3a8a]">
-                    <p class="mb-3">The APS Calculator is used for NSC, ISC, and SACAI results. If you use another foreign school system, please check with the university for conversion information.</p>
-                    <p class="mb-2"><span class="font-bold">*</span> Please note that applicants who completed the South African Senior Certificate before 2008 cannot calculate an APS score.</p>
-                    <p class="mb-3"><strong class="font-bold">**</strong> All foreign qualification applicants need to apply to the Matriculation board (USAf) for an exemption certificate.</p>
-                    <p class="mt-4 pt-3 border-t border-blue-300 font-bold">You need at least 6 subjects to calculate your APS score.</p>
-                </div>
-            </header>
-            <div id="category-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <!-- University group cards will be injected here -->
-            </div>
-        </div>
+    <main id="app-container" class="w-full max-w-6xl mx-auto">
+                <div id="home-screen">
+            <header class="text-center mb-10 pop-in">
+                <h1 class="text-5xl md:text-7xl font-bold tracking-wider">APS SCORE</h1>
+                <p class="text-xl text-blue-800 mt-2">Free Online APS Score for South African Universities</p>
+      C       <div class="mt-4 max-w-3xl mx-auto text-left text-sm text-blue-700 bg-white/70 p-5 rounded-lg border-4 border-blue-900 shadow-[6px_6px_0px_#1e3a8a]">
+                    <p class="mb-3">The APS Calculator is used for NSC, ISC, and SACAI results. If you use another foreign school system, please check with the university for conversion information.</p>
+                    <p class="mb-2"><span class="font-bold">*</span> Please note that applicants who completed the South African Senior Certificate before 2008 cannot calculate an APS score.</p>
+                    <p class="mb-3"><strong class="font-bold">**</strong> All foreign qualification applicants need to apply to the Matriculation board (USAf) for an exemption certificate.</p>
+                    <p class="mt-4 pt-3 border-t border-blue-300 font-bold">You need at least 6 subjects to calculate your APS score.</p>
+                </div>
+            </header>
+            <div id="category-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                            </div>
+        </div>
 
-        <!-- Calculator Screen -->
-        <div id="calculator-screen" class="hidden">
-            <header class="flex items-center justify-between mb-8">
-                <button id="back-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    &lt; Back
-                </button>
-                <h2 id="calculator-title" class="text-3xl md:text-4xl font-bold text-center">Wits (Unique)</h2>
-                <button id="check-other-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    Check Other Universities
-                </button>
-            </header>
-            <div id="calculator-container" class="space-y-6">
-                <!-- Calculator will be injected here -->
-            </div>
-        </div>
+                <div id="calculator-screen" class="hidden">
+            <header class="flex items-center justify-between mb-8">
+                <button id="back-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    &lt; Back
+                </button>
+                <h2 id="calculator-title" class="text-3xl md:text-4xl font-bold text-center">Wits (Unique)</h2>
+A             <button id="check-other-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    Check Other Universities
+                </button>
+            </header>
+            <div id="calculator-container" class="space-y-6">
+                            </div>
+        </div>
 
-        <!-- Results Screen -->
-        <div id="results-screen" class="hidden">
-            <header class="flex items-center justify-between mb-8">
-                <button id="back-to-calc-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    &lt; Back to Calculator
-                </button>
-                <h2 id="results-title" class="text-3xl md:text-4xl font-bold text-center">Your APS Results</h2>
-                <button id="check-other-results-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    Check Other Universities
-                </button>
-            </header>
-            <div id="results-container" class="space-y-6">
-                <!-- Results will be injected here -->
-            </div>
-        </div>
-    </main>
+                <div id="results-screen" class="hidden">
+            <header class="flex items-center justify-between mb-8">
+                <button id="back-to-calc-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    &lt; Back to Calculator
+                </button>
+                <h2 id="results-title" class="text-3xl md:text-4xl font-bold text-center">Your APS Results</h2>
+                <button id="check-other-results-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    Check Other Universities
+                </button>
+            </header>
+            <div id="results-container" class="space-y-6">
+                            </div>
+        </div>
+    </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const homeScreen = document.getElementById('home-screen');
-            const calculatorScreen = document.getElementById('calculator-screen');
-            const resultsScreen = document.getElementById('results-screen');
-            const categoryGrid = document.getElementById('category-grid');
-            const backBtn = document.getElementById('back-btn');
-            const backToCalcBtn = document.getElementById('back-to-calc-btn');
-            const checkOtherBtn = document.getElementById('check-other-btn');
-            const checkOtherResultsBtn = document.getElementById('check-other-results-btn');
-            const calculatorTitle = document.getElementById('calculator-title');
-            const resultsTitle = document.getElementById('results-title');
-            const calculatorContainer = document.getElementById('calculator-container');
-            const resultsContainer = document.getElementById('results-container');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeScreen = document.getElementById('home-screen');
+            const calculatorScreen = document.getElementById('calculator-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const categoryGrid = document.getElementById('category-grid');
+            const backBtn = document.getElementById('back-btn');
+            const backToCalcBtn = document.getElementById('back-to-calc-btn');
+            const checkOtherBtn = document.getElementById('check-other-btn');
+            const checkOtherResultsBtn = document.getElementById('check-other-results-btn');
+S           const calculatorTitle = document.getElementById('calculator-title');
+            const resultsTitle = document.getElementById('results-title');
+            const calculatorContainer = document.getElementById('calculator-container');
+            const resultsContainer = document.getElementById('results-container');
 
-            // All South African high school subjects including languages
-            const allSubjects = [
-                // Languages
-                'English Home Language', 'English First Additional Language', 
-                'Afrikaans Home Language', 'Afrikaans First Additional Language',
-                'IsiZulu Home Language', 'IsiZulu First Additional Language',
-                'IsiXhosa Home Language', 'IsiXhosa First Additional Language',
-                'Sepedi Home Language', 'Sepedi First Additional Language',
-                'Setswana Home Language', 'Setswana First Additional Language',
-                'Sesotho Home Language', 'Sesotho First Additional Language',
-                'Xitsonga Home Language', 'Xitsonga First Additional Language',
-                'SiSwati Home Language', 'SiSwati First Additional Language',
-                'Tshivenda Home Language', 'Tshivenda First Additional Language',
-                'IsiNdebele Home Language', 'IsiNdebele First Additional Language',
-                
-                // Core Subjects
-                'Mathematics', 'Mathematical Literacy', 
-                'Life Sciences', 'Physical Sciences',
-                'Geography', 'History',
-                'Life Orientation',
-                
-                // Commercial Subjects
-                'Accounting', 'Business Studies', 'Economics',
-                
-                // Technical Subjects
-                'Information Technology', 'Computer Applications Technology',
-                'Engineering Graphics and Design', 'Civil Technology',
-                'Electrical Technology', 'Mechanical Technology',
-                
-                // Arts & Culture
-                'Dramatic Arts', 'Visual Arts', 'Music', 'Dance Studies',
-                
-                // Other Subjects
-                'Agricultural Sciences', 'Agricultural Technology',
-                'Hospitality Studies', 'Consumer Studies',
-                'Tourism', 'Religious Studies'
-            ];
+            // All South African high school subjects including languages
+            const allSubjects = [
+                // Languages
+                'English Home Language', 'English First Additional Language', 
+                'Afrikaans Home Language', 'Afrikaans First Additional Language',
+                'IsiZulu Home Language', 'IsiZulu First Additional Language',
+                'IsiXhosa Home Language', 'IsiXhosa First Additional Language',
+                'Sepedi Home Language', 'Sepedi First Additional Language',
+                'Setswana Home Language', 'Setswana First Additional Language',
+                'Sesotho Home Language', 'Sesotho First Additional Language',
+                'Xitsonga Home Language', 'Xitsonga First Additional Language',
+                'SiSwati Home Language', 'SiSwati First Additional Language',
+                'Tshivenda Home Language', 'Tshivenda First Additional Language',
+                'IsiNdebele Home Language', 'IsiNdebele First Additional Language',
+                
+                // Core Subjects
+                'Mathematics', 'Mathematical Literacy', 
+                'Life Sciences', 'Physical Sciences',
+                'Geography', 'History',
+                'Life Orientation',
+                
+                // Commercial Subjects
+                'Accounting', 'Business Studies', 'Economics',
+                
+                // Technical Subjects
+                'Information Technology', 'Computer Applications Technology',
+                'Engineering Graphics and Design', 'Civil Technology',
+                'Electrical Technology', 'Mechanical Technology',
+                
+                // Arts & Culture
+                'Dramatic Arts', 'Visual Arts', 'Music', 'Dance Studies',
+                
+                // Other Subjects
+                'Agricultural Sciences', 'Agricultural Technology',
+                'Hospitality Studies', 'Consumer Studies',
+                'Tourism', 'Religious Studies'
+            ];
 
-            const universityGroups = {
-                wits: {
-                    title: 'Wits (Unique)', 
-                    icon: '🎓', 
-                    color: 'bg-purple-300',
-                    description: 'Calculates APS using your best 7 subjects, including L.O. and bonus points.',
-                    universities: 'University of the Witwatersrand',
-                    type: 'wits'
-                },
-                standard: {
-                    title: 'Standard Universities', 
-                    icon: '🏛️', 
-                    color: 'bg-blue-300',
-                    description: 'Calculates APS using your best 6 subjects, excluding Life Orientation.',
-                    universities: 'UP, UCT, NWU, UJ, UWC, UKZN, UFS, RU, UL, UNISA',
-                    type: '6-subject'
-                },
-                univen: {
-                    title: 'Univen Decimal', 
-                    icon: '🧮', 
-                    color: 'bg-yellow-300',
-                    description: 'Calculates using your top 6 subjects (no LO) on a decimal scale. Subjects below 40% not counted.',
-                    universities: 'University of Venda (UNIVEN)',
-                    type: 'univen'
-                }
-            };
+            const universityGroups = {
+                wits: {
+                    title: 'Wits (Unique)', 
+                    icon: '🎓', 
+                    color: 'bg-purple-300',
+                    description: 'Calculates APS using your best 7 subjects, including L.O. and bonus points.',
+                    universities: 'University of the Witwatersrand',
+                    type: 'wits'
+                },
+                standard: {
+                    title: 'Standard Universities', 
+                    icon: '🏛️', 
+                    color: 'bg-blue-300',
+                    description: 'Calculates APS using your best 6 subjects, excluding Life Orientation.',
+                    universities: 'UP, UCT, NWU, UJ, UWC, UKZN, UFS, RU, UL, UNISA',
+                    type: '6-subject'
+        _       },
+                univen: {
+                    title: 'Univen Decimal', 
+                  _ icon: '🧮', 
+                    color: 'bg-yellow-300',
+                    description: 'Calculates using your top 6 subjects (no LO) on a decimal scale. Subjects below 40% not counted.',
+                    universities: 'University of Venda (UNIVEN)',
+                    type: 'univen'
+                }
+            };
 
-            // Grade to APS points mapping based on percentage
-            function percentageToPoints(percentage) {
-                if (percentage >= 80) return 7;
-                if (percentage >= 70) return 6;
-                if (percentage >= 60) return 5;
-                if (percentage >= 50) return 4;
-                if (percentage >= 40) return 3;
-                if (percentage >= 30) return 2;
-                return 1;
-            }
+            // Grade to APS points mapping based on percentage
+            function percentageToPoints(percentage) {
+                if (percentage >= 80) return 7;
+                if (percentage >= 70) return 6;
+                if (percentage >= 60) return 5;
+                if (percentage >= 50) return 4;
+    _           if (percentage >= 40) return 3;
+                if (percentage >= 30) return 2;
+                return 1;
+            }
 
-            // Univen decimal calculation (marks divided by 10)
-            function percentageToUnivenPoints(percentage) {
-                if (percentage < 40) return 0; // Subjects below 40% not counted
-                return percentage / 10;
-            }
+            // Univen decimal calculation (marks divided by 10)
+            function percentageToUnivenPoints(percentage) {
+                if (percentage < 40) return 0; // Subjects below 40% not counted
+                return percentage / 10;
+            }
 
-            let currentGroup = 'wits';
-            let subjects = [];
-            let userAPS = 0;
+            let currentGroup = 'wits';
+            let subjects = [];
+            let userAPS = 0;
 
-            function renderHomeScreen() {
-                categoryGrid.innerHTML = '';
-                let delay = 0;
-                for (const key in universityGroups) {
-                    const group = universityGroups[key];
-                    const card = document.createElement('div');
-                    card.className = `category-card ${group.color} p-6 rounded-2xl cursor-pointer text-center pop-in`;
-                    card.style.animationDelay = `${delay}s`;
-                    card.dataset.group = key;
-                    card.innerHTML = `
-                        <div class="text-6xl">${group.icon}</div>
-                        <h3 class="text-2xl font-bold mt-4">${group.title}</h3>
-                        <p class="text-sm mt-2">${group.universities}</p>
-                    `;
-                    card.addEventListener('click', () => showCalculatorScreen(key));
-                    categoryGrid.appendChild(card);
-                    delay += 0.1;
-                }
-            }
+            function renderHomeScreen() {
+                categoryGrid.innerHTML = '';
+                let delay = 0;
+                for (const key in universityGroups) {
+                    const group = universityGroups[key];
+                    const card = document.createElement('div');
+                    card.className = `category-card ${group.color} p-6 rounded-2xl cursor-pointer text-center pop-in`;
+                    card.style.animationDelay = `${delay}s`;
+                    card.dataset.group = key;
+                    card.innerHTML = `
+                        <div class="text-6xl">${group.icon}</div>
+                        <h3 class="text-2xl font-bold mt-4">${group.title}</h3>
+                        <p class="text-sm mt-2">${group.universities}</p>
+                    `;
+                    card.addEventListener('click', () => showCalculatorScreen(key));
+                    categoryGrid.appendChild(card);
+                    delay += 0.1;
+                }
+            }
 
-            function showCalculatorScreen(groupKey) {
-                currentGroup = groupKey;
-                const group = universityGroups[groupKey];
-                homeScreen.classList.add('hidden');
-                calculatorScreen.classList.remove('hidden');
-                calculatorScreen.classList.add('slide-in-up');
-                calculatorTitle.textContent = group.title;
-                calculatorContainer.innerHTML = '';
-                
-                // Add subject selection UI
-                const subjectDiv = document.createElement('div');
-                subjectDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
-                subjectDiv.innerHTML = `
-                    <h3 class="text-2xl font-bold mb-4">Add Your Subjects & Marks (%)</h3>
-                    <p class="text-blue-700 mb-4">Enter your final marks as percentages (0-100). You need at least 6 subjects.</p>
-                    <div id="subjects-container" class="space-y-4">
-                        <!-- Subjects will be added here -->
-                    </div>
-                    <div class="mt-6 flex justify-between">
-                        <button id="add-subject-btn" class="bg-blue-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                            + Add Subject
-                        </button>
-                        <button id="calculate-btn" class="bg-green-300 text-blue-900 px-6 py-3 rounded-xl category-card ${subjects.length >= 6 ? '' : 'hidden'}">
-                            Calculate APS
-                        </button>
-                    </div>
-                `;
-                calculatorContainer.appendChild(subjectDiv);
-                
-                // Add event listeners
-                document.getElementById('add-subject-btn').addEventListener('click', addSubjectRow);
-                document.getElementById('calculate-btn').addEventListener('click', calculateAPS);
-                
-                // Load saved subjects if they exist
-                if (subjects.length > 0) {
-                    subjects.forEach(subject => {
-                        addSubjectRow(subject.name, subject.mark);
-                    });
-                } else {
-                    // Add initial subject rows (6 rows)
-                    for (let i = 0; i < 6; i++) {
-                        addSubjectRow();
-                    }
-                }
-            }
+            function showCalculatorScreen(groupKey) {
+                currentGroup = groupKey;
+                const group = universityGroups[groupKey];
+                homeScreen.classList.add('hidden');
+                calculatorScreen.classList.remove('hidden');
+                calculatorScreen.classList.add('slide-in-up');
+                calculatorTitle.textContent = group.title;
+                calculatorContainer.innerHTML = '';
+                
+                // Add subject selection UI
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
+                subjectDiv.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4">Add Your Subjects & Marks (%)</h3>
+                    <p class="text-blue-700 mb-4">Enter your final marks as percentages (0-100). You need at least 6 subjects.</p>
+                    <div id="subjects-container" class="space-y-4">
+                                            </div>
+                    <div class="mt-6 flex justify-between">
+                        <button id="add-subject-btn" class="bg-blue-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                            + Add Subject
+                        </button>
+                        <button id="calculate-btn" class="bg-green-300 text-blue-900 px-6 py-3 rounded-xl category-card ${subjects.length >= 6 ? '' : 'hidden'}">
+                            Calculate APS
+                        </button>
+                    </div>
+                `;
+                calculatorContainer.appendChild(subjectDiv);
+                
+                // Add event listeners
+                document.getElementById('add-subject-btn').addEventListener('click', addSubjectRow);
+                document.getElementById('calculate-btn').addEventListener('click', calculateAPS);
+                
+                // Load saved subjects if they exist
+                if (subjects.length > 0) {
+                    subjects.forEach(subject => {
+                        addSubjectRow(subject.name, subject.mark);
+                    });
+                } else {
+                    // Add initial subject rows (6 rows)
+                    for (let i = 0; i < 6; i++) {
+                        addSubjectRow();
+                    }
+                }
+            }
 
-            function addSubjectRow(presetSubject = '', presetMark = '') {
-                const subjectsContainer = document.getElementById('subjects-container');
-                const subjectRow = document.createElement('div');
-                subjectRow.className = 'flex gap-4 items-center pop-in';
-                subjectRow.innerHTML = `
-                    <div class="subject-input-container flex-1">
-                        <input type="text" class="converter-input w-full p-2 rounded-xl" placeholder="Select Subject" 
-                               value="${presetSubject}" data-type="subject">
-                        <div class="subject-dropdown hidden">
-                            ${allSubjects.map(subject => 
-                                `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                            ).join('')}
-                        </div>
-                    </div>
-                    <input type="number" class="mark-input w-24 p-2 rounded-xl text-center" 
-                           placeholder="%" min="0" max="100" value="${presetMark}">
-                    <button class="remove-subject bg-red-300 text-blue-900 px-4 py-2 rounded-xl category-card">×</button>
-                `;
-                subjectsContainer.appendChild(subjectRow);
-                
-                // Set up subject dropdown
-                const subjectInput = subjectRow.querySelector('[data-type="subject"]');
-                const dropdown = subjectRow.querySelector('.subject-dropdown');
-                const markInput = subjectRow.querySelector('.mark-input');
-                
-                // Filter subjects based on input
-                subjectInput.addEventListener('input', () => {
-                    const searchTerm = subjectInput.value.toLowerCase();
-                    const filteredSubjects = allSubjects.filter(subject => 
-                        subject.toLowerCase().includes(searchTerm)
-                    );
-                    
-                    dropdown.innerHTML = filteredSubjects.map(subject => 
-                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                    ).join('');
-                    
-                    if (filteredSubjects.length > 0 && searchTerm.length > 0) {
-                        dropdown.classList.remove('hidden');
-                    } else {
-                        dropdown.classList.add('hidden');
-                    }
-                });
-                
-                subjectInput.addEventListener('focus', () => {
-                    // Show all subjects when input is focused
-                    dropdown.innerHTML = allSubjects.map(subject => 
-                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                    ).join('');
-                    dropdown.classList.remove('hidden');
-                });
-                
-                subjectInput.addEventListener('blur', () => {
-                    setTimeout(() => dropdown.classList.add('hidden'), 200);
-                });
-                
-                // Click handler for dropdown items
-                dropdown.addEventListener('mousedown', (e) => {
-                    if (e.target.classList.contains('subject-dropdown-item')) {
-                        e.preventDefault();
-                        subjectInput.value = e.target.textContent;
-                        dropdown.classList.add('hidden');
-                        checkCalculateButton();
-                    }
-                });
-                
-                // Set up mark input validation
-                markInput.addEventListener('input', (e) => {
-                    // Only allow numbers and limit to 3 digits (0-100)
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                    if (e.target.value.length > 3) {
-                        e.target.value = e.target.value.slice(0, 3);
-                    }
-                    if (parseInt(e.target.value) > 100) {
-                        e.target.value = '100';
-                    }
-                    checkCalculateButton();
-                });
-                
-                // Set up remove button
-                subjectRow.querySelector('.remove-subject').addEventListener('click', () => {
-                    subjectRow.remove();
-                    checkCalculateButton();
-                });
-                
-                checkCalculateButton();
-            }
+            function addSubjectRow(presetSubject = '', presetMark = '') {
+                const subjectsContainer = document.getElementById('subjects-container');
+                const subjectRow = document.createElement('div');
+                subjectRow.className = 'flex gap-4 items-center pop-in';
+                subjectRow.innerHTML = `
+                    <div class="subject-input-container flex-1">
+                        <input type="text" class="converter-input w-full p-2 rounded-xl" placeholder="Select Subject" 
+                               value="${presetSubject}" data-type="subject">
+                        <div class="subject-dropdown hidden">
+                            ${allSubjects.map(subject => 
+                    _             `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <input type="number" class="mark-input w-24 p-2 rounded-xl text-center" 
+                           placeholder="%" min="0" max="100" value="${presetMark}">
+                    <button class="remove-subject bg-red-300 text-blue-900 px-4 py-2 rounded-xl category-card">×</button>
+                `;
+                subjectsContainer.appendChild(subjectRow);
+                
+                // Set up subject dropdown
+                const subjectInput = subjectRow.querySelector('[data-type="subject"]');
+                const dropdown = subjectRow.querySelector('.subject-dropdown');
+                const markInput = subjectRow.querySelector('.mark-input');
+                
+     _         // Filter subjects based on input
+                subjectInput.addEventListener('input', () => {
+                    const searchTerm = subjectInput.value.toLowerCase();
+                    const filteredSubjects = allSubjects.filter(subject => 
+                        subject.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    dropdown.innerHTML = filteredSubjects.map(subject => 
+                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+                    ).join('');
+              _   
+                    if (filteredSubjects.length > 0 && searchTerm.length > 0) {
+                        dropdown.classList.remove('hidden');
+                    } else {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+                
+                subjectInput.addEventListener('focus', () => {
+                    // Show all subjects when input is focused
+                    dropdown.innerHTML = allSubjects.map(subject => 
+                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+         _           ).join('');
+                    dropdown.classList.remove('hidden');
+                });
+                
+                subjectInput.addEventListener('blur', () => {
+                    setTimeout(() => dropdown.classList.add('hidden'), 200);
+                });
+                
+                // Click handler for dropdown items
+                dropdown.addEventListener('mousedown', (e) => {
+                    if (e.target.classList.contains('subject-dropdown-item')) {
+                        e.preventDefault();
+                        subjectInput.value = e.target.textContent;
+             _           dropdown.classList.add('hidden');
+                        checkCalculateButton();
+                    }
+                });
+                
+                // Set up mark input validation
+                markInput.addEventListener('input', (e) => {
+                    // Only allow numbers and limit to 3 digits (0-100)
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    if (e.target.value.length > 3) {
+                        e.target.value = e.target.value.slice(0, 3);
+         _         }
+                    if (parseInt(e.target.value) > 100) {
+                        e.target.value = '100';
+                    }
+                    checkCalculateButton();
+                });
+                
+                // Set up remove button
+                subjectRow.querySelector('.remove-subject').addEventListener('click', () => {
+                    subjectRow.remove();
+                    checkCalculateButton();
+                });
+             _   
+                checkCalculateButton();
+            }
 
-            function checkCalculateButton() {
-                const calculateBtn = document.getElementById('calculate-btn');
-                const subjectRows = document.querySelectorAll('#subjects-container > div');
-                let allFilled = true;
-                let usedSubjects = new Set();
-                let hasDuplicates = false;
-                
-                subjectRows.forEach(row => {
-                    const subjectInput = row.querySelector('[data-type="subject"]');
-                    const markInput = row.querySelector('.mark-input');
-                    
-                    if (!subjectInput.value || !markInput.value) {
-                        allFilled = false;
-                    } else {
-                        if (usedSubjects.has(subjectInput.value)) {
-                            hasDuplicates = true;
-                            subjectInput.style.borderColor = 'red';
-                        } else {
-                            usedSubjects.add(subjectInput.value);
-                            subjectInput.style.borderColor = '#1e3a8a';
-                        }
-                    }
-                });
-                
-                if (allFilled && subjectRows.length >= 6 && !hasDuplicates) {
-                    calculateBtn.classList.remove('hidden');
-                } else {
-                    calculateBtn.classList.add('hidden');
-                }
-            }
+            function checkCalculateButton() {
+                const calculateBtn = document.getElementById('calculate-btn');
+                const subjectRows = document.querySelectorAll('#subjects-container > div');
+                let allFilled = true;
+                let usedSubjects = new Set();
+                let hasDuplicates = false;
+                
+                subjectRows.forEach(row => {
+                    const subjectInput = row.querySelector('[data-type="subject"]');
+     _             const markInput = row.querySelector('.mark-input');
+                    
+                    if (!subjectInput.value || !markInput.value) {
+                        allFilled = false;
+                    } else {
+                        if (usedSubjects.has(subjectInput.value)) {
+                            hasDuplicates = true;
+                            subjectInput.style.borderColor = 'red';
+                        } else {
+                            usedSubjects.add(subjectInput.value);
+                 _           subjectInput.style.borderColor = '#1e3a8a';
+                        }
+                    }
+              _ });
+                
+                if (allFilled && subjectRows.length >= 6 && !hasDuplicates) {
+                    calculateBtn.classList.remove('hidden');
+                } else {
+                    calculateBtn.classList.add('hidden');
+                }
+            }
 
-            function calculateAPS() {
-                subjects = [];
-                const subjectRows = document.querySelectorAll('#subjects-container > div');
-                
-                subjectRows.forEach(row => {
-                    const subjectInput = row.querySelector('[data-type="subject"]');
-                    const markInput = row.querySelector('.mark-input');
-                    
-                    subjects.push({
-                        name: subjectInput.value,
-                        mark: parseInt(markInput.value),
-                        points: percentageToPoints(parseInt(markInput.value)),
-                        univenPoints: percentageToUnivenPoints(parseInt(markInput.value))
-                    });
-                });
-                
-                // Calculate APS based on university group
-                let aps = 0;
-                if (currentGroup === 'wits') {
-                    // Wits: Best 7 subjects including LO
-                    const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
-                    const topSubjects = sortedSubjects.slice(0, 7);
-                    aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                } else if (currentGroup === 'standard') {
-                    // Standard groups: Best 6 subjects excluding LO
-                    const nonLOSubjects = subjects.filter(subject => 
-                        !subject.name.toLowerCase().includes('life orientation')
-                    );
-                    const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
-                    const topSubjects = sortedSubjects.slice(0, 6);
-                    aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                } else if (currentGroup === 'univen') {
-                    // Univen: Best 6 subjects excluding LO, using decimal points
-                    const nonLOSubjects = subjects.filter(subject => 
-                        !subject.name.toLowerCase().includes('life orientation')
-                    );
-                    const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
-                    const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
-                    const topSubjects = sortedSubjects.slice(0, 6);
-                    aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
-                }
-                
-                userAPS = aps;
-                showResultsScreen();
-            }
+            function calculateAPS() {
+                subjects = [];
+                const subjectRows = document.querySelectorAll('#subjects-container > div');
+             _   
+                subjectRows.forEach(row => {
+                    const subjectInput = row.querySelector('[data-type="subject"]');
+                    const markInput = row.querySelector('.mark-input');
+                    
+                    subjects.push({
+          _             name: subjectInput.value,
+                        mark: parseInt(markInput.value),
+                        points: percentageToPoints(parseInt(markInput.value)),
+                        univenPoints: percentageToUnivenPoints(parseInt(markInput.value))
+                    });
+                });
+             _   
+                // Calculate APS based on university group
+                let aps = 0;
+                if (currentGroup === 'wits') {
+                    // Wits: Best 7 subjects including LO
+                    const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
+                    const topSubjects = sortedSubjects.slice(0, 7);
+             _       aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
+                } else if (currentGroup === 'standard') {
+                    // Standard groups: Best 6 subjects excluding LO
+     _               const nonLOSubjects = subjects.filter(subject => 
+                        !subject.name.toLowerCase().includes('life orientation')
+                    );
+                    const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
+                    const topSubjects = sortedSubjects.slice(0, 6);
+                    aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
+                } else if (currentGroup === 'univen') {
+     _             // Univen: Best 6 subjects excluding LO, using decimal points
+                    const nonLOSubjects = subjects.filter(subject => 
+                        !subject.name.toLowerCase().includes('life orientation')
+           _       );
+                    const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
+                    const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
+             _       const topSubjects = sortedSubjects.slice(0, 6);
+                    aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
+                }
+                
+           _     userAPS = aps;
+          _       showResultsScreen();
+            }
 
-            function showResultsScreen() {
-                calculatorScreen.classList.add('hidden');
-                resultsScreen.classList.remove('hidden');
-                resultsScreen.classList.add('slide-in-up');
-                resultsTitle.textContent = `Your ${universityGroups[currentGroup].title} APS Score`;
-                resultsContainer.innerHTML = '';
-                
-                const resultsDiv = document.createElement('div');
-                resultsDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
-                
-                // Special note for Univen
-                const univenNote = currentGroup === 'univen' ? 
-                    '<p class="text-blue-700 text-center mb-4">Note: Subjects below 40% are not counted in Univen\'s APS calculation.</p>' : '';
-                
-                resultsDiv.innerHTML = `
-                    <h3 class="text-2xl font-bold mb-4 text-center">Your Admission Point Score</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-8xl font-bold text-blue-900">${userAPS}</div>
-                        <p class="text-lg mt-2">${currentGroup === 'univen' ? 'decimal points' : 'out of ' + (currentGroup === 'wits' ? '49' : '42') + ' possible points'}</p>
-                    </div>
-                    ${univenNote}
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold mb-2">Your Subjects & Marks:</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            ${subjects.map(subject => `
-                                <div class="flex justify-between p-2 ${subject.mark < 40 && currentGroup === 'univen' ? 'bg-red-100' : 'bg-blue-100'} rounded-lg">
-                                    <span>${subject.name}</span>
-                                    <span class="font-bold">${subject.mark}% 
-                                    ${currentGroup === 'univen' ? 
-                                        `(${subject.univenPoints.toFixed(1)} pts)` : 
-                                        `(${subject.points} pts)`}
-                                    </span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    <div class="text-center mt-8">
-                        <p class="text-blue-700 mb-4">Want to check your APS with other university groups?</p>
-                        <button id="compare-universities-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card text-xl">
-                            Compare All Universities
-                        </button>
-                    </div>
-                `;
-                resultsContainer.appendChild(resultsDiv);
-                
-                document.getElementById('compare-universities-btn').addEventListener('click', showUniversityComparison);
-            }
+            function showResultsScreen() {
+           _     calculatorScreen.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+                resultsScreen.classList.add('slide-in-up');
+                resultsTitle.textContent = `Your ${universityGroups[currentGroup].title} APS Score`;
+         _       resultsContainer.innerHTML = '';
+           _     
+                const resultsDiv = document.createElement('div');
+           _     resultsDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
+       _         
+                // Special note for Univen
+             _   const univenNote = currentGroup === 'univen' ? 
+ _                     '<p class="text-blue-700 text-center mb-4">Note: Subjects below 40% are not counted in Univen\'s APS calculation.</p>' : '';
+         _       
+                resultsDiv.innerHTML = `
+       _             <h3 class="text-2xl font-bold mb-4 text-center">Your Admission Point Score</h3>
+         _           <div class="text-center mb-6">
+                        <div class="text-8xl font-bold text-blue-900">${userAPS}</div>
+   _                     <p class="text-lg mt-2">${currentGroup === 'univen' ? 'decimal points' : 'out of ' + (currentGroup === 'wits' ? '49' : '42') + ' possible points'}</p>
+             _       </div>
+           _         ${univenNote}
+   _                 <div class="mb-6">
+     _                   <h4 class="text-xl font-bold mb-2">Your Subjects & Marks:</h4>
+       _                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+     _                       ${subjects.map(subject => `
+   _                             <div class="flex justify-between p-2 ${subject.mark < 40 && currentGroup === 'univen' ? 'bg-red-100' : 'bg-blue-100'} rounded-lg">
+   _                                 <span>${subject.name}</span>
+  _                                 <span class="font-bold">${subject.mark}% 
+   _                                     ${currentGroup === 'univen' ? 
+    _                                         `(${subject.univenPoints.toFixed(1)} pts)` : 
+    _                                         `(${subject.points} pts)`}
+     _                                 </span>
+   _                               </div>
+ _                             `).join('')}
+           _             </div>
+     _               </div>
+    _               <div class="text-center mt-8">
+       _                 <p class="text-blue-700 mb-4">Want to check your APS with other university groups?</p>
+       _                 <button id="compare-universities-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card text-xl">
+                            Compare All Universities
+           _             </button>
+       _           </div>
+  _             `;
+     _         resultsContainer.appendChild(resultsDiv);
+    _           
+   _             document.getElementById('compare-universities-btn').addEventListener('click', showUniversityComparison);
+         _ }
 
-            function showUniversityComparison() {
-                resultsContainer.innerHTML = '';
-                
-                const comparisonDiv = document.createElement('div');
-                comparisonDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
-                
-                let comparisonHTML = `
-                    <h3 class="text-2xl font-bold mb-4 text-center">APS Score Comparison</h3>
-                    <p class="text-blue-700 mb-6 text-center">Your APS calculated for different university groups:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                `;
-                
-                // Calculate APS for each university group
-                for (const key in universityGroups) {
-                    let aps = 0;
-                    if (key === 'wits') {
-                        // Wits: Best 7 subjects including LO
-                        const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
-                        const topSubjects = sortedSubjects.slice(0, 7);
-                        aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                    } else if (key === 'standard') {
-                        // Standard groups: Best 6 subjects excluding LO
-                        const nonLOSubjects = subjects.filter(subject => 
-                            !subject.name.toLowerCase().includes('life orientation')
-                        );
-                        const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
-                        const topSubjects = sortedSubjects.slice(0, 6);
-                        aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                    } else if (key === 'univen') {
-                        // Univen: Best 6 subjects excluding LO, using decimal points
-                        const nonLOSubjects = subjects.filter(subject => 
-                            !subject.name.toLowerCase().includes('life orientation')
-                        );
-                        const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
-                        const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
-                        const topSubjects = sortedSubjects.slice(0, 6);
-                        aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
-                    }
-                    
-                    comparisonHTML += `
-                        <div class="bg-white p-4 rounded-xl border-4 border-blue-900 text-center">
-                            <h4 class="text-xl font-bold">${universityGroups[key].title}</h4>
-                            <div class="text-4xl font-bold my-3">${aps}</div>
-                            <p class="text-sm">${universityGroups[key].universities}</p>
-                        </div>
-                    `;
-                }
-                
-                comparisonHTML += `</div>`;
-                comparisonDiv.innerHTML = comparisonHTML;
-                resultsContainer.appendChild(comparisonDiv);
-            }
+ _           function showUniversityComparison() {
+                resultsContainer.innerHTML = '';
+                
+ _               const comparisonDiv = document.createElement('div');
+                comparisonDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
+       _         
+                let comparisonHTML = `
+           _         <h3 class="text-2xl font-bold mb-4 text-center">APS Score Comparison</h3>
+                 _   <p class="text-blue-700 mb-6 text-center">Your APS calculated for different university groups:</p>
+     _               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  _             `;
+       _         
+ _               // Calculate APS for each university group
+         _       for (const key in universityGroups) {
+     _               let aps = 0;
+    _                 if (key === 'wits') {
+   _                     // Wits: Best 7 subjects including LO
+   _                     const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
+               _         const topSubjects = sortedSubjects.slice(0, 7);
+  _                       aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
+    _          _     } else if (key === 'standard') {
+         _               // Standard groups: Best 6 subjects excluding LO
+     _                   const nonLOSubjects = subjects.filter(subject => 
+   _                         !subject.name.toLowerCase().includes('life orientation')
+  _                     );
+ _                       const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
+    _                     const topSubjects = sortedSubjects.slice(0, 6);
+   _                       aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
+  _          _     } else if (key === 'univen') {
+   _                     // Univen: Best 6 subjects excluding LO, using decimal points
+  _          _           const nonLOSubjects = subjects.filter(subject => 
+  _          _               !subject.name.toLowerCase().includes('life orientation')
+ _                     );
+ _            _           const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
+ _            _           const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
+  _           _           const topSubjects = sortedSubjects.slice(0, 6);
+ _          _             aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
+  _      _       }
+      _             
+    _      _         comparisonHTML += `
+ _        _             <div class="bg-white p-4 rounded-xl border-4 border-blue-900 text-center">
+  _     _                 <h4 class="text-xl font-bold">${universityGroups[key].title}</h4>
+ _  _  _                   <div class="text-4xl font-bold my-3">${aps}</div>
+    _                   <p class="text-sm">${universityGroups[key].universities}</p>
+  _  _        _       </div>
+  _    _      _     `;
+     _     _     }
+     _  _    _     
+   _    _         comparisonHTML += `</div>`;
+    _    _       comparisonDiv.innerHTML = comparisonHTML;
+ _     _         resultsContainer.appendChild(comparisonDiv);
+ _       _   }
 
-            // Back button event listeners
-            backBtn.addEventListener('click', () => {
-                calculatorScreen.classList.add('hidden');
-                homeScreen.classList.remove('hidden');
-                renderHomeScreen();
-            });
+    _   _     // Back button event listeners
+ _     _       backBtn.addEventListener('click', () => {
+      _  _         calculatorScreen.classList.add('hidden');
+     _   _         homeScreen.classList.remove('hidden');
+    _    _         renderHomeScreen();
+   _  _     });
 
-            backToCalcBtn.addEventListener('click', () => {
-                resultsScreen.classList.add('hidden');
-                calculatorScreen.classList.remove('hidden');
-            });
+     _   _     backToCalcBtn.addEventListener('click', () => {
+    _     _       resultsScreen.classList.add('hidden');
+      _  _         calculatorScreen.classList.remove('hidden');
+  _   _     });
 
-            checkOtherBtn.addEventListener('click', () => {
-                calculatorScreen.classList.add('hidden');
-                homeScreen.classList.remove('hidden');
-                renderHomeScreen();
-            });
+       _   _     checkOtherBtn.addEventListener('click', () => {
+ _     _         calculatorScreen.classList.add('hidden');
+  _     _         homeScreen.classList.remove('hidden');
+   _   _         renderHomeScreen();
+  _ _     });
 
-            checkOtherResultsBtn.addEventListener('click', () => {
-                resultsScreen.classList.add('hidden');
-                homeScreen.classList.remove('hidden');
-                renderHomeScreen();
-            });
+   _   _       checkOtherResultsBtn.addEventListener('click', () => {
+ _   _           resultsScreen.classList.add('hidden');
+ _   _           homeScreen.classList.remove('hidden');
+   _ _           renderHomeScreen();
+  _ _     });
 
-            // Initialize the app
-            renderHomeScreen();
-        });
-    </script>
+      _ _   // Initialize the app
+     _   _     renderHomeScreen();
+     _ _   });
+    </script>
 </body>
 </html>
-
 
 
 
