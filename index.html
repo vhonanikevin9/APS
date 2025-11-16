@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3965711326232111"
-     crossorigin="anonymous"></script>
+<!DOCTYPE html> <html lang="en"> <head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3965711326232111" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APS Score Calculator - Free Online APS Score for South African Universities</title>
@@ -102,12 +99,27 @@
             outline: none;
             box-shadow: 2px 2px 0px #1e3a8a;
         }
+        .subject-group {
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 4px solid #1e3a8a;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 8px 8px 0px #1e3a8a;
+            margin-bottom: 1.5rem;
+        }
+        .university-select {
+            font-family: 'Fredoka One', cursive;
+            border: 4px solid #1e3a8a;
+            box-shadow: 6px 6px 0px #1e3a8a;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
     <main id="app-container" class="w-full max-w-6xl mx-auto">
-        <!-- Home Screen: University Group Selection -->
         <div id="home-screen">
             <header class="text-center mb-10 pop-in">
                 <h1 class="text-5xl md:text-7xl font-bold tracking-wider">APS SCORE</h1>
@@ -119,40 +131,54 @@
                     <p class="mt-4 pt-3 border-t border-blue-300 font-bold">You need at least 6 subjects to calculate your APS score.</p>
                 </div>
             </header>
-            <div id="category-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <!-- University group cards will be injected here -->
+             <div class="text-center pop-in mb-10">
+                <button id="start-calculator-btn" class="bg-green-400 text-blue-900 px-10 py-5 rounded-2xl category-card text-3xl shadow-lg">
+                    Start Calculator
+                </button>
             </div>
         </div>
 
-        <!-- Calculator Screen -->
         <div id="calculator-screen" class="hidden">
             <header class="flex items-center justify-between mb-8">
                 <button id="back-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
                     &lt; Back
                 </button>
-                <h2 id="calculator-title" class="text-3xl md:text-4xl font-bold text-center">Wits (Unique)</h2>
-                <button id="check-other-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    Check Other Universities
-                </button>
-            </header>
+                <h2 id="calculator-title" class="text-3xl md:text-4xl font-bold text-center">Enter Your Marks</h2>
+                <div class="w-24"></div> </header>
             <div id="calculator-container" class="space-y-6">
-                <!-- Calculator will be injected here -->
-            </div>
+                </div>
         </div>
 
-        <!-- Results Screen -->
         <div id="results-screen" class="hidden">
             <header class="flex items-center justify-between mb-8">
                 <button id="back-to-calc-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
                     &lt; Back to Calculator
                 </button>
                 <h2 id="results-title" class="text-3xl md:text-4xl font-bold text-center">Your APS Results</h2>
-                <button id="check-other-results-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card">
-                    Check Other Universities
+                <button id="check-courses-btn" class="bg-green-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    Check Courses
                 </button>
             </header>
             <div id="results-container" class="space-y-6">
-                <!-- Results will be injected here -->
+                </div>
+        </div>
+
+        <div id="courses-screen" class="hidden">
+            <header class="flex items-center justify-between mb-8">
+                <button id="back-to-results-btn" class="bg-yellow-300 text-blue-900 px-6 py-3 rounded-xl category-card">
+                    &lt; Back to Results
+                </button>
+                <h2 id="courses-title" class="text-3xl md:text-4xl font-bold text-center">Course Qualifications</h2>
+                <div class="w-24"></div> </header>
+            <div id="courses-container" class="space-y-6">
+                <div class="bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a]">
+                    <h3 class="text-xl font-bold mb-4">Filter by University</h3>
+                    <select id="university-filter" class="university-select mb-6">
+                        <option value="all">All Universities</option>
+                    </select>
+                    <div id="courses-list">
+                        </div>
+                </div>
             </div>
         </div>
     </main>
@@ -162,79 +188,160 @@
             const homeScreen = document.getElementById('home-screen');
             const calculatorScreen = document.getElementById('calculator-screen');
             const resultsScreen = document.getElementById('results-screen');
-            const categoryGrid = document.getElementById('category-grid');
+            const coursesScreen = document.getElementById('courses-screen');
+            const startCalculatorBtn = document.getElementById('start-calculator-btn');
             const backBtn = document.getElementById('back-btn');
             const backToCalcBtn = document.getElementById('back-to-calc-btn');
-            const checkOtherBtn = document.getElementById('check-other-btn');
-            const checkOtherResultsBtn = document.getElementById('check-other-results-btn');
+            const backToResultsBtn = document.getElementById('back-to-results-btn');
+            const checkCoursesBtn = document.getElementById('check-courses-btn');
             const calculatorTitle = document.getElementById('calculator-title');
             const resultsTitle = document.getElementById('results-title');
+            const coursesTitle = document.getElementById('courses-title');
             const calculatorContainer = document.getElementById('calculator-container');
             const resultsContainer = document.getElementById('results-container');
+            const coursesContainer = document.getElementById('courses-container');
+            const universityFilter = document.getElementById('university-filter');
+            const coursesList = document.getElementById('courses-list');
 
-            // All South African high school subjects including languages
-            const allSubjects = [
-                // Languages
-                'English Home Language', 'English First Additional Language', 
-                'Afrikaans Home Language', 'Afrikaans First Additional Language',
-                'IsiZulu Home Language', 'IsiZulu First Additional Language',
-                'IsiXhosa Home Language', 'IsiXhosa First Additional Language',
-                'Sepedi Home Language', 'Sepedi First Additional Language',
-                'Setswana Home Language', 'Setswana First Additional Language',
-                'Sesotho Home Language', 'Sesotho First Additional Language',
-                'Xitsonga Home Language', 'Xitsonga First Additional Language',
-                'SiSwati Home Language', 'SiSwati First Additional Language',
-                'Tshivenda Home Language', 'Tshivenda First Additional Language',
-                'IsiNdebele Home Language', 'IsiNdebele First Additional Language',
-                
-                // Core Subjects
-                'Mathematics', 'Mathematical Literacy', 
+            // Subject categories
+            const homeLanguageSubjects = [
+                'Afrikaans Home Language', 'English Home Language',
+                'IsiNdebele Home Language', 'IsiXhosa Home Language',
+                'IsiZulu Home Language', 'Sepedi Home Language',
+                'Sesotho Home Language', 'Setswana Home Language',
+                'SiSwati Home Language', 'Tshivenda Home Language',
+                'Xitsonga Home Language'
+            ];
+            
+            const firstAdditionalSubjects = [
+                'Afrikaans First Additional Language', 'English First Additional Language',
+                'IsiNdebele First Additional Language', 'IsiXhosa First Additional Language',
+                'IsiZulu First Additional Language', 'Sepedi First Additional Language',
+                'Sesotho First Additional Language', 'Setswana First Additional Language',
+                'SiSwati First Additional Language', 'Tshivenda First Additional Language',
+                'Xitsonga First Additional Language'
+            ];
+            
+            const mathematicsSubjects = [
+                'Mathematics', 'Mathematical Literacy'
+            ];
+            
+            const otherSubjects = [
                 'Life Sciences', 'Physical Sciences',
                 'Geography', 'History',
-                'Life Orientation',
-                
-                // Commercial Subjects
                 'Accounting', 'Business Studies', 'Economics',
-                
-                // Technical Subjects
                 'Information Technology', 'Computer Applications Technology',
                 'Engineering Graphics and Design', 'Civil Technology',
                 'Electrical Technology', 'Mechanical Technology',
-                
-                // Arts & Culture
                 'Dramatic Arts', 'Visual Arts', 'Music', 'Dance Studies',
-                
-                // Other Subjects
                 'Agricultural Sciences', 'Agricultural Technology',
                 'Hospitality Studies', 'Consumer Studies',
                 'Tourism', 'Religious Studies'
             ];
+            
+            // --- NEW: Full list of 26 Universities for the filter ---
+            const allUniversities = [
+                "CPUT", "CUT", "DUT", "MUT", "NMU", "NWU", "RU", "SMU", "SPU", 
+                "SU", "TUT", "UCT", "UFH", "UFS", "UJ", "UKZN", "UL", "UMP", 
+                "UP", "UNISA", "UWC", "Wits", "Univen", "UniZulu", "VUT", "WSU"
+            ];
 
-            const universityGroups = {
-                wits: {
-                    title: 'Wits (Unique)', 
-                    icon: '🎓', 
-                    color: 'bg-purple-300',
-                    description: 'Calculates APS using your best 7 subjects, including L.O. and bonus points.',
-                    universities: 'University of the Witwatersrand',
-                    type: 'wits'
-                },
-                standard: {
-                    title: 'Standard Universities', 
-                    icon: '🏛️', 
-                    color: 'bg-blue-300',
-                    description: 'Calculates APS using your best 6 subjects, excluding Life Orientation.',
-                    universities: 'UP, UCT, NWU, UJ, UWC, UKZN, UFS, RU, UL, UNISA',
-                    type: '6-subject'
-                },
-                univen: {
-                    title: 'Univen Decimal', 
-                    icon: '🧮', 
-                    color: 'bg-yellow-300',
-                    description: 'Calculates using your top 6 subjects (no LO) on a decimal scale. Subjects below 40% not counted.',
-                    universities: 'University of Venda (UNIVEN)',
-                    type: 'univen'
-                }
+            // --- NEW: Expanded Course Data from uploaded prospectuses ---
+            // This is a sample based on the provided PDF files.
+            const courseData = {
+                'Health Sciences': [
+                    { name: 'Bachelor of Medicine and Bachelor of Surgery (MBChB)', aps: 38, university: 'SMU', lang: 4, maths: 5, lifeSci: 5, phySci: 5 },
+                    { name: 'Bachelor of Pharmacy (BPharm)', aps: 32, university: 'SMU', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'Bachelor of Dental Surgery (BDS)', aps: 37, university: 'SMU', lang: 4, maths: 5, lifeSci: 5, phySci: 5 },
+                    { name: 'Bachelor of Nursing and Midwifery (BNAM)', aps: 26, university: 'SMU', lang: 4, maths: 3, lifeSci: 4, phySci: 4 },
+                    { name: 'Bachelor of Diagnostic Radiography (BRAD)', aps: 24, university: 'SMU', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'Bachelor of Medicine and Bachelor of Surgery (MBChB)', aps: 43, university: 'Wits', lang: 5, maths: 5, lifeSci: 5, phySci: 5 },
+                    { name: 'Bachelor of Pharmacy (BPharm)', aps: 35, university: 'Wits', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'Bachelor of Science in Nursing', aps: 32, university: 'Univen', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'BSc in Nutrition', aps: 30, university: 'Univen', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'BSc in Dietetics', aps: 32, university: 'UKZN', lang: 4, maths: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'Diploma in Somatology', aps: 22, university: 'TUT', lang: 3, maths: 3, lifeSci: 4 },
+                    { name: 'Bachelor of Health Science (Biokinetics)', aps: 32, university: 'NMU', lang: 4, maths: 4, lifeSci: 4 },
+                    { name: 'Bachelor of Health Science (BHSc)', aps: 30, university: 'UMP', lang: 4, maths: 4, lifeSci: 4 }
+                ],
+                'Engineering & Built Environment': [
+                    { name: 'BEngTech (Chemical Engineering)', aps: 28, university: 'TUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BEngTech (Civil Engineering)', aps: 28, university: 'TUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BEngTech (Electrical Engineering)', aps: 28, university: 'TUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BEngTech (Mechanical Engineering)', aps: 28, university: 'TUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'Diploma in Civil Engineering', aps: 22, university: 'MUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BEng (Civil Engineering)', aps: 33, university: 'UP', lang: 5, maths: 6, phySci: 6 },
+                    { name: 'BEng (Electrical Engineering)', aps: 33, university: 'UP', lang: 5, maths: 6, phySci: 6 },
+                    { name: 'BEng (Mechanical Engineering)', aps: 33, university: 'UP', lang: 5, maths: 6, phySci: 6 },
+                    { name: 'BEngTech (Civil Engineering)', aps: 26, university: 'UJ', lang: 4, maths: 5, phySci: 5 },
+                    { name: 'BEngSc (Engineering Science - all streams)', aps: 40, university: 'Wits', lang: 5, maths: 6, phySci: 6 },
+                    { name: 'BSc in Construction Studies', aps: 36, university: 'Wits', lang: 4, maths: 5 },
+                    { name: 'Diploma in Civil Engineering', aps: 28, university: 'CPUT', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'Diploma in Building', aps: 28, university: 'CPUT', lang: 4, maths: 4 },
+                    { name: 'BSc in Physical Sciences (Mining)', aps: 28, university: 'Univen', lang: 4, maths: 4, phySci: 4 }
+                ],
+                'Business, Management & Law': [
+                    { name: 'Diploma in Accounting', aps: 22, university: 'TUT', lang: 3, maths: 3, acc: 3 },
+                    { name: 'Diploma in Financial Management', aps: 22, university: 'TUT', lang: 3, maths: 3, acc: 3 },
+                    { name: 'Diploma in Marketing', aps: 22, university: 'TUT', lang: 3, maths: 3 },
+                    { name: 'Diploma in Human Resource Management', aps: 24, university: 'TUT', lang: 3, maths: 3 },
+                    { name: 'Diploma in Public Management', aps: 20, university: 'MUT', lang: 3, maths: 2 },
+                    { name: 'BCom (Accounting)', aps: 28, university: 'UJ', lang: 4, maths: 4 },
+                    { name: 'BCom (Marketing)', aps: 26, university: 'UJ', lang: 4, maths: 4 },
+                    { name: 'BCom (Accounting Sciences)', aps: 32, university: 'UP', lang: 5, maths: 5 },
+                    { name: 'Bachelor of Laws (LLB)', aps: 32, university: 'UP', lang: 5 },
+                    { name: 'BCom', aps: 39, university: 'Wits', lang: 4, maths: 5 },
+                    { name: 'Bachelor of Laws (LLB)', aps: 43, university: 'Wits', lang: 6 },
+                    { name: 'Bachelor of Administration', aps: 30, university: 'Univen', lang: 4, maths: 3 },
+                    { name: 'BCom Accounting Sciences', aps: 32, university: 'Univen', lang: 4, maths: 4 },
+                    { name: 'Bachelor of Laws (LLB)', aps: 35, university: 'Univen', lang: 5 },
+                    { name: 'BCom (Accounting)', aps: 30, university: 'UFS', lang: 4, maths: 5, acc: 5 },
+                    { name: 'Bachelor of Laws (LLB)', aps: 32, university: 'UFH', lang: 4 },
+                    { name: 'BCom (Accounting)', aps: 28, university: 'NWU', lang: 4, maths: 4 },
+                    { name: 'Bachelor of Commerce', aps: 28, university: 'UKZN', lang: 4, maths: 4 },
+                    { name: 'BCom (Accounting)', aps: 26, university: 'UL', lang: 4, maths: 4 },
+                    { name: 'Diploma in Accountancy', aps: 26, university: 'UMP', lang: 4, maths: 3 },
+                    { name: 'Bachelor of Laws (LLB)', aps: 37, university: 'UWC', lang: 5 },
+                    { name: 'BCom (General)', aps: 28, university: 'NMU', lang: 4, maths: 4 },
+                    { name: 'Diploma in Public Management', aps: 23, university: 'SPU', lang: 4 }
+                ],
+                'Humanities & Social Sciences': [
+                    { name: 'Bachelor of Arts (BA)', aps: 28, university: 'Univen', lang: 4 },
+                    { name: 'B.Ed (Foundation Phase Teaching)', aps: 30, university: 'Univen', lang: 4, mathsLit: 5 },
+                    { name: 'B.Ed (Senior Phase)', aps: 30, university: 'Univen', lang: 4 },
+                    { name: 'BA (General)', aps: 30, university: 'UP', lang: 5 },
+                    { name: 'BEd (Foundation Phase)', aps: 30, university: 'UP', lang: 5, mathsLit: 5 },
+                    { name: 'BA', aps: 36, university: 'Wits', lang: 5 },
+                    { name: 'BEd (Foundation Phase)', aps: 36, university: 'Wits', lang: 5 },
+                    { name: 'BA (Anthropology)', aps: 24, university: 'UJ', lang: 4 },
+                    { name: 'BEd (Foundation Phase)', aps: 28, university: 'UJ', lang: 4, mathsLit: 5 },
+                    { name: 'BSocSci', aps: 30, university: 'UFS', lang: 4 },
+                    { name: 'BA (Behavioural Sciences)', aps: 22, university: 'NWU', lang: 4 },
+                    { name: 'Bachelor of Social Work', aps: 28, university: 'UKZN', lang: 4 },
+                    { name: 'Bachelor of Arts (Social Work)', aps: 26, university: 'UL', lang: 4 },
+                    { name: 'BA (General)', aps: 28, university: 'UMP', lang: 4 },
+                    { name: 'Bachelor of Arts (BA)', aps: 28, university: 'UniZulu', lang: 4 },
+                    { name: 'Bachelor of Education (BEd) Foundation Phase', aps: 26, university: 'SPU', lang: 4 }
+                ],
+                'Science & Technology': [
+                    { name: 'Diploma in Computer Science', aps: 28, university: 'TUT', lang: 4, maths: 4 },
+                    { name: 'Diploma in Information Technology', aps: 28, university: 'TUT', lang: 4, maths: 4 },
+                    { name: 'Diploma in Information Technology', aps: 20, university: 'MUT', lang: 3, maths: 3 },
+                    { name: 'BSc (Computer Science)', aps: 36, university: 'Wits', lang: 5, maths: 6 },
+                    { name: 'BSc (Information Technology)', aps: 30, university: 'UJ', lang: 4, maths: 5 },
+                    { name: 'BSc (Computer Science)', aps: 30, university: 'UP', lang: 5, maths: 6 },
+                    { name: 'BSc in Environmental Sciences', aps: 28, university: 'Univen', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BSc in Biological Sciences', aps: 28, university: 'Univen', lang: 4, lifeSci: 4, phySci: 4 },
+                    { name: 'BSc in Chemistry', aps: 28, university: 'Univen', lang: 4, maths: 4, phySci: 4 },
+                    { name: 'BSc (Chemistry)', aps: 30, university: 'UFS', lang: 4, maths: 5, phySci: 5 },
+                    { name: 'BSc (Chemistry)', aps: 26, university: 'NWU', lang: 4, maths: 5, phySci: 5 },
+                    { name: 'BSc (Computer Science)', aps: 28, university: 'UKZN', lang: 4, maths: 5 },
+                    { name: 'BSc (Life and Environmental Sciences)', aps: 28, university: 'UJ', lang: 4, maths: 4 },
+                    { name: 'BSc (Biological Sciences)', aps: 26, university: 'UL', lang: 4, maths: 4, lifeSci: 4 },
+                    { name: 'BSc (Agriculture)', aps: 26, university: 'UMP', lang: 4, maths: 4, lifeSci: 4 },
+                    { name: 'BSc (Data Science)', aps: 30, university: 'SPU', lang: 4, maths: 5 },
+                    { name: 'Diploma in Information Technology', aps: 27, university: 'CPUT', lang: 4, maths: 4 }
+                ]
             };
 
             // Grade to APS points mapping based on percentage
@@ -245,47 +352,76 @@
                 if (percentage >= 50) return 4;
                 if (percentage >= 40) return 3;
                 if (percentage >= 30) return 2;
-                return 1;
+                return 1; // 0-29%
             }
 
-            // Univen decimal calculation (marks divided by 10)
-            function percentageToUnivenPoints(percentage) {
-                if (percentage < 40) return 0; // Subjects below 40% not counted
-                return percentage / 10;
+            // Wits points calculation
+            function percentageToWitsPoints(percentage) {
+                if (percentage >= 90) return 8;
+                if (percentage >= 80) return 7;
+                if (percentage >= 70) return 6;
+                if (percentage >= 60) return 5;
+                if (percentage >= 50) return 4;
+                if (percentage >= 40) return 3;
+                return 0; // 0-39%
+            }
+            
+            // UWC Points (Based on provided prospectus)
+            function percentageToUWCPoints(percentage, subjectType) {
+                let points = 0;
+                // Points for English or Maths Lit
+                if (subjectType === 'english' || subjectType === 'mathsLit') {
+                    if (percentage >= 90) return 15;
+                    if (percentage >= 80) return 13;
+                    if (percentage >= 70) return 11;
+                    if (percentage >= 60) return 9;
+                    if (percentage >= 50) return 7;
+                    if (percentage >= 40) return 5;
+                    if (percentage >= 30) return 3;
+                }
+                // Points for Mathematics
+                if (subjectType === 'mathematics') {
+                    if (percentage >= 90) return 33;
+                    if (percentage >= 80) return 29;
+                    if (percentage >= 70) return 25;
+                    if (percentage >= 60) return 21;
+                    if (percentage >= 50) return 17;
+                    if (percentage >= 40) return 13;
+                    if (percentage >= 30) return 9;
+                }
+                 // Points for Life Orientation
+                 if (subjectType === 'life-orientation') {
+                    if (percentage >= 70) return 2; // Prospectus shows 70-100% = 2 points
+                    if (percentage >= 30) return 1; // Prospectus shows 30-69% = 1 point
+                }
+                // Points for Other Subjects
+                if (subjectType === 'other') {
+                    if (percentage >= 90) return 9;
+                    if (percentage >= 80) return 7;
+                    if (percentage >= 70) return 5;
+                    if (percentage >= 60) return 3;
+                    if (percentage >= 50) return 1;
+                }
+                return 0; // Below 30% for LO/Lang/MathsLit, or below 50% for Other
             }
 
-            let currentGroup = 'wits';
+
             let subjects = [];
-            let userAPS = 0;
+            let allCalculatedScores = {}; // To store scores for all universities
+            let userLanguages = { homeLanguage: null, firstAdditional: null };
 
             function renderHomeScreen() {
-                categoryGrid.innerHTML = '';
-                let delay = 0;
-                for (const key in universityGroups) {
-                    const group = universityGroups[key];
-                    const card = document.createElement('div');
-                    card.className = `category-card ${group.color} p-6 rounded-2xl cursor-pointer text-center pop-in`;
-                    card.style.animationDelay = `${delay}s`;
-                    card.dataset.group = key;
-                    card.innerHTML = `
-                        <div class="text-6xl">${group.icon}</div>
-                        <h3 class="text-2xl font-bold mt-4">${group.title}</h3>
-                        <p class="text-sm mt-2">${group.universities}</p>
-                    `;
-                    card.addEventListener('click', () => showCalculatorScreen(key));
-                    categoryGrid.appendChild(card);
-                    delay += 0.1;
-                }
+                homeScreen.classList.remove('hidden');
+                calculatorScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                coursesScreen.classList.add('hidden');
             }
 
-            function showCalculatorScreen(groupKey) {
-                currentGroup = groupKey;
-                const group = universityGroups[groupKey];
+            function showCalculatorScreen() {
                 homeScreen.classList.add('hidden');
                 calculatorScreen.classList.remove('hidden');
                 calculatorScreen.classList.add('slide-in-up');
-                calculatorTitle.textContent = group.title;
-                calculatorContainer.innerHTML = '';
+                calculatorContainer.innerHTML = ''; // Clear previous
                 
                 // Add subject selection UI
                 const subjectDiv = document.createElement('div');
@@ -294,132 +430,131 @@
                     <h3 class="text-2xl font-bold mb-4">Add Your Subjects & Marks (%)</h3>
                     <p class="text-blue-700 mb-4">Enter your final marks as percentages (0-100). You need at least 6 subjects.</p>
                     <div id="subjects-container" class="space-y-4">
-                        <!-- Subjects will be added here -->
-                    </div>
+                        </div>
                     <div class="mt-6 flex justify-between">
                         <button id="add-subject-btn" class="bg-blue-300 text-blue-900 px-6 py-3 rounded-xl category-card">
                             + Add Subject
                         </button>
-                        <button id="calculate-btn" class="bg-green-300 text-blue-900 px-6 py-3 rounded-xl category-card ${subjects.length >= 6 ? '' : 'hidden'}">
-                            Calculate APS
+                        <button id="calculate-btn" class="bg-green-300 text-blue-900 px-6 py-3 rounded-xl category-card hidden">
+                            Calculate All Scores
                         </button>
                     </div>
                 `;
                 calculatorContainer.appendChild(subjectDiv);
                 
                 // Add event listeners
-                document.getElementById('add-subject-btn').addEventListener('click', addSubjectRow);
-                document.getElementById('calculate-btn').addEventListener('click', calculateAPS);
+                document.getElementById('add-subject-btn').addEventListener('click', () => addSubjectRow('', '', 'other', otherSubjects));
+                document.getElementById('calculate-btn').addEventListener('click', calculateAllScores);
                 
-                // Load saved subjects if they exist
-                if (subjects.length > 0) {
-                    subjects.forEach(subject => {
-                        addSubjectRow(subject.name, subject.mark);
-                    });
-                } else {
-                    // Add initial subject rows (6 rows)
-                    for (let i = 0; i < 6; i++) {
-                        addSubjectRow();
-                    }
-                }
+                // Add initial subject rows
+                addSubjectRow('', '', 'home-language', homeLanguageSubjects);
+                addSubjectRow('', '', 'first-additional', firstAdditionalSubjects);
+                addSubjectRow('', '', 'mathematics', mathematicsSubjects);
+                addSubjectRow('', '', 'subject1', otherSubjects);
+                addSubjectRow('', '', 'subject2', otherSubjects);
+                addSubjectRow('', '', 'subject3', otherSubjects);
+                addSubjectRow('Life Orientation', '', 'life-orientation', ['Life Orientation']);
+                
+                checkCalculateButton();
             }
 
-            function addSubjectRow(presetSubject = '', presetMark = '') {
+            function addSubjectRow(presetSubject = '', presetMark = '', type = 'other', subjectList = otherSubjects) {
                 const subjectsContainer = document.getElementById('subjects-container');
                 const subjectRow = document.createElement('div');
-                subjectRow.className = 'flex gap-4 items-center pop-in';
+                subjectRow.className = 'subject-group pop-in';
+                
+                let label = 'Subject';
+                if (type === 'home-language') label = 'Home Language';
+                else if (type === 'first-additional') label = 'First Additional Language';
+                else if (type === 'mathematics') label = 'Mathematics / Mathematical Literacy';
+                else if (type === 'life-orientation') label = 'Life Orientation';
+                
                 subjectRow.innerHTML = `
-                    <div class="subject-input-container flex-1">
-                        <input type="text" class="converter-input w-full p-2 rounded-xl" placeholder="Select Subject" 
-                               value="${presetSubject}" data-type="subject">
-                        <div class="subject-dropdown hidden">
-                            ${allSubjects.map(subject => 
-                                `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                            ).join('')}
+                    <h3 class="text-xl font-bold mb-3">${label}</h3>
+                    <div class="flex gap-4 items-center">
+                        <div class="subject-input-container flex-1">
+                            <input type="text" class="converter-input w-full p-2 rounded-xl" placeholder="Select Subject" 
+                                   value="${presetSubject}" data-type="${type}" ${type === 'life-orientation' ? 'readonly' : ''}>
+                            <div class="subject-dropdown hidden">
+                                ${subjectList.map(subject => 
+                                    `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+                                ).join('')}
+                            </div>
                         </div>
+                        <input type="number" class="mark-input w-24 p-2 rounded-xl text-center" 
+                               placeholder="%" min="0" max="100" value="${presetMark}">
+                        ${(type.startsWith('subject') || type === 'other') ? '<button class="remove-subject bg-red-300 text-blue-900 px-4 py-2 rounded-xl category-card">×</button>' : ''}
                     </div>
-                    <input type="number" class="mark-input w-24 p-2 rounded-xl text-center" 
-                           placeholder="%" min="0" max="100" value="${presetMark}">
-                    <button class="remove-subject bg-red-300 text-blue-900 px-4 py-2 rounded-xl category-card">×</button>
                 `;
                 subjectsContainer.appendChild(subjectRow);
                 
-                // Set up subject dropdown
-                const subjectInput = subjectRow.querySelector('[data-type="subject"]');
-                const dropdown = subjectRow.querySelector('.subject-dropdown');
-                const markInput = subjectRow.querySelector('.mark-input');
-                
-                // Filter subjects based on input
-                subjectInput.addEventListener('input', () => {
-                    const searchTerm = subjectInput.value.toLowerCase();
-                    const filteredSubjects = allSubjects.filter(subject => 
-                        subject.toLowerCase().includes(searchTerm)
-                    );
+                // Set up subject dropdown (only if not Life Orientation)
+                if (type !== 'life-orientation') {
+                    const subjectInput = subjectRow.querySelector('[data-type]');
+                    const dropdown = subjectRow.querySelector('.subject-dropdown');
                     
-                    dropdown.innerHTML = filteredSubjects.map(subject => 
-                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                    ).join('');
-                    
-                    if (filteredSubjects.length > 0 && searchTerm.length > 0) {
+                    subjectInput.addEventListener('input', () => {
+                        const searchTerm = subjectInput.value.toLowerCase();
+                        const filteredSubjects = subjectList.filter(subject => 
+                            subject.toLowerCase().includes(searchTerm)
+                        );
+                        
+                        dropdown.innerHTML = filteredSubjects.map(subject => 
+                            `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+                        ).join('');
+                        
                         dropdown.classList.remove('hidden');
-                    } else {
-                        dropdown.classList.add('hidden');
-                    }
-                });
-                
-                subjectInput.addEventListener('focus', () => {
-                    // Show all subjects when input is focused
-                    dropdown.innerHTML = allSubjects.map(subject => 
-                        `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
-                    ).join('');
-                    dropdown.classList.remove('hidden');
-                });
-                
-                subjectInput.addEventListener('blur', () => {
-                    setTimeout(() => dropdown.classList.add('hidden'), 200);
-                });
-                
-                // Click handler for dropdown items
-                dropdown.addEventListener('mousedown', (e) => {
-                    if (e.target.classList.contains('subject-dropdown-item')) {
-                        e.preventDefault();
-                        subjectInput.value = e.target.textContent;
-                        dropdown.classList.add('hidden');
-                        checkCalculateButton();
-                    }
-                });
+                    });
+                    
+                    subjectInput.addEventListener('focus', () => {
+                        dropdown.innerHTML = subjectList.map(subject => 
+                            `<div class="subject-dropdown-item" data-value="${subject}">${subject}</div>`
+                        ).join('');
+                        dropdown.classList.remove('hidden');
+                    });
+                    
+                    subjectInput.addEventListener('blur', () => {
+                        setTimeout(() => dropdown.classList.add('hidden'), 200);
+                    });
+                    
+                    dropdown.addEventListener('mousedown', (e) => {
+                        if (e.target.classList.contains('subject-dropdown-item')) {
+                            e.preventDefault();
+                            subjectInput.value = e.target.textContent;
+                            dropdown.classList.add('hidden');
+                            checkCalculateButton();
+                        }
+                    });
+                }
                 
                 // Set up mark input validation
+                const markInput = subjectRow.querySelector('.mark-input');
                 markInput.addEventListener('input', (e) => {
-                    // Only allow numbers and limit to 3 digits (0-100)
                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                    if (e.target.value.length > 3) {
-                        e.target.value = e.target.value.slice(0, 3);
-                    }
-                    if (parseInt(e.target.value) > 100) {
-                        e.target.value = '100';
-                    }
+                    if (parseInt(e.target.value) > 100) e.target.value = '100';
                     checkCalculateButton();
                 });
                 
                 // Set up remove button
-                subjectRow.querySelector('.remove-subject').addEventListener('click', () => {
-                    subjectRow.remove();
-                    checkCalculateButton();
-                });
+                if (type.startsWith('subject') || type === 'other') {
+                    subjectRow.querySelector('.remove-subject').addEventListener('click', () => {
+                        subjectRow.remove();
+                        checkCalculateButton();
+                    });
+                }
                 
                 checkCalculateButton();
             }
 
             function checkCalculateButton() {
                 const calculateBtn = document.getElementById('calculate-btn');
-                const subjectRows = document.querySelectorAll('#subjects-container > div');
+                const subjectRows = document.querySelectorAll('.subject-group');
                 let allFilled = true;
                 let usedSubjects = new Set();
                 let hasDuplicates = false;
                 
                 subjectRows.forEach(row => {
-                    const subjectInput = row.querySelector('[data-type="subject"]');
+                    const subjectInput = row.querySelector('input[data-type]');
                     const markInput = row.querySelector('.mark-input');
                     
                     if (!subjectInput.value || !markInput.value) {
@@ -442,49 +577,116 @@
                 }
             }
 
-            function calculateAPS() {
+            function calculateAllScores() {
                 subjects = [];
-                const subjectRows = document.querySelectorAll('#subjects-container > div');
+                const subjectRows = document.querySelectorAll('.subject-group');
                 
                 subjectRows.forEach(row => {
-                    const subjectInput = row.querySelector('[data-type="subject"]');
+                    const subjectInput = row.querySelector('input[data-type]');
                     const markInput = row.querySelector('.mark-input');
+                    const mark = parseInt(markInput.value) || 0;
                     
                     subjects.push({
                         name: subjectInput.value,
-                        mark: parseInt(markInput.value),
-                        points: percentageToPoints(parseInt(markInput.value)),
-                        univenPoints: percentageToUnivenPoints(parseInt(markInput.value))
+                        mark: mark,
+                        type: subjectInput.dataset.type,
+                        points: percentageToPoints(mark),
+                        witsPoints: percentageToWitsPoints(mark)
                     });
                 });
                 
-                // Calculate APS based on university group
-                let aps = 0;
-                if (currentGroup === 'wits') {
-                    // Wits: Best 7 subjects including LO
-                    const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
-                    const topSubjects = sortedSubjects.slice(0, 7);
-                    aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                } else if (currentGroup === 'standard') {
-                    // Standard groups: Best 6 subjects excluding LO
-                    const nonLOSubjects = subjects.filter(subject => 
-                        !subject.name.toLowerCase().includes('life orientation')
-                    );
-                    const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
-                    const topSubjects = sortedSubjects.slice(0, 6);
-                    aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                } else if (currentGroup === 'univen') {
-                    // Univen: Best 6 subjects excluding LO, using decimal points
-                    const nonLOSubjects = subjects.filter(subject => 
-                        !subject.name.toLowerCase().includes('life orientation')
-                    );
-                    const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
-                    const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
-                    const topSubjects = sortedSubjects.slice(0, 6);
-                    aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
-                }
+                userLanguages.homeLanguage = subjects.find(s => s.type === 'home-language');
+                userLanguages.firstAdditional = subjects.find(s => s.type === 'first-additional');
+
+                allCalculatedScores = {};
+                const nonLOSubjects = subjects.filter(s => s.type !== 'life-orientation');
+                const nonLOSubjectsSorted = [...nonLOSubjects].sort((a, b) => b.points - a.points);
+                const top6NonLO = nonLOSubjectsSorted.slice(0, 6);
+                const lo = subjects.find(s => s.type === 'life-orientation');
                 
-                userAPS = aps;
+                // Group 1: Standard Scale, 7 Subjects (LO INCLUDED)
+                const group1Score = subjects.reduce((sum, subject) => sum + subject.points, 0);
+                allCalculatedScores['SMU'] = group1Score;
+                allCalculatedScores['SPU'] = group1Score;
+                allCalculatedScores['UMP'] = group1Score;
+                allCalculatedScores['DUT'] = group1Score; 
+                allCalculatedScores['WSU'] = group1Score; 
+                
+                // Group 2: Standard Scale, 6 Subjects (LO EXCLUDED)
+                const group2Score = top6NonLO.reduce((sum, subject) => sum + subject.points, 0);
+                allCalculatedScores['UP'] = group2Score;
+                allCalculatedScores['UJ'] = group2Score;
+                allCalculatedScores['UKZN'] = group2Score; // UKZN is complex, but this is a close base
+                allCalculatedScores['NWU'] = group2Score;
+                allCalculatedScores['UL'] = group2Score;
+                allCalculatedScores['Univen'] = group2Score;
+                allCalculatedScores['UniZulu'] = group2Score;
+                allCalculatedScores['MUT'] = group2Score;
+                allCalculatedScores['TUT'] = group2Score;
+                allCalculatedScores['UNISA'] = group2Score;
+                allCalculatedScores['VUT'] = group2Score; 
+
+                // Group 3: Unique
+                
+                // Wits
+                let witsScore = 0;
+                const english = userLanguages.homeLanguage.points > userLanguages.firstAdditional.points ? userLanguages.homeLanguage : userLanguages.firstAdditional;
+                const math = subjects.find(s => s.name === 'Mathematics');
+                subjects.forEach(subject => {
+                    if (subject.type === 'life-orientation') {
+                        if (subject.mark >= 80) witsScore += 3;
+                        else if (subject.mark >= 70) witsScore += 2;
+                        else if (subject.mark >= 60) witsScore += 1;
+                    } else {
+                        witsScore += subject.witsPoints;
+                    }
+                });
+                if (english && english.mark >= 60) witsScore += 2;
+                if (math && math.mark >= 60) witsScore += 2;
+                allCalculatedScores['Wits'] = witsScore;
+
+                // UFS (Hybrid)
+                let ufsScore = group2Score; 
+                if (lo && lo.mark >= 60) { ufsScore += 1; }
+                allCalculatedScores['UFS'] = ufsScore;
+
+                // UFH (Hybrid)
+                let ufhScore = group2Score; // Base of 6
+                if(lo && lo.points > 0) {
+                   ufhScore += (lo.points > 3 ? 3 : lo.points); // Add LO, capped at 3 points
+                }
+                allCalculatedScores['UFH'] = ufhScore;
+
+                // NMU (Applicant Score - Sum of %)
+                let nmuScore = top6NonLO.reduce((sum, s) => sum + s.mark, 0);
+                if (lo && lo.mark >= 50) { nmuScore += 7; } // Bonus for LO
+                allCalculatedScores['NMU'] = nmuScore;
+                
+                // CPUT (Sum of % / 10)
+                let cputScore = Math.floor(top6NonLO.reduce((sum, s) => sum + s.mark, 0) / 10);
+                allCalculatedScores['CPUT'] = cputScore;
+                
+                // UWC (Weighted Points)
+                let uwcScore = 0;
+                subjects.forEach(s => {
+                    let type = 'other';
+                    if (s.type === 'home-language' || s.type === 'first-additional') type = 'english';
+                    if (s.name === 'Mathematics') type = 'mathematics';
+                    if (s.name === 'Mathematical Literacy') type = 'mathsLit';
+                    if (s.type === 'life-orientation') type = 'life-orientation';
+                    uwcScore += percentageToUWCPoints(s.mark, type);
+                });
+                allCalculatedScores['UWC'] = uwcScore;
+                
+                // SU (Average %)
+                allCalculatedScores['SU'] = Math.floor(top6NonLO.reduce((sum, s) => sum + s.mark, 0) / 6);
+                
+                // UCT (Sum of %)
+                allCalculatedScores['UCT'] = top6NonLO.reduce((sum, s) => sum + s.mark, 0);
+                
+                // RU (Decimal Points)
+                allCalculatedScores['RU'] = parseFloat(top6NonLO.reduce((sum, s) => sum + (s.mark < 40 ? 0 : s.mark / 10), 0).toFixed(1));
+
                 showResultsScreen();
             }
 
@@ -492,108 +694,165 @@
                 calculatorScreen.classList.add('hidden');
                 resultsScreen.classList.remove('hidden');
                 resultsScreen.classList.add('slide-in-up');
-                resultsTitle.textContent = `Your ${universityGroups[currentGroup].title} APS Score`;
+                resultsTitle.textContent = `Your Calculated Admission Scores`;
                 resultsContainer.innerHTML = '';
                 
                 const resultsDiv = document.createElement('div');
                 resultsDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
                 
-                // Special note for Univen
-                const univenNote = currentGroup === 'univen' ? 
-                    '<p class="text-blue-700 text-center mb-4">Note: Subjects below 40% are not counted in Univen\'s APS calculation.</p>' : '';
+                let resultsHTML = `<h3 class="text-2xl font-bold mb-4 text-center">Your Scores by University</h3>
+                                  <p class="text-center text-blue-700 mb-6">These scores are calculated based on the admission rules from the prospectuses.
+                                  Note that some faculties (like Engineering at CPUT or UCT) may use different, weighted calculations.</p>
+                                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">`;
                 
-                resultsDiv.innerHTML = `
-                    <h3 class="text-2xl font-bold mb-4 text-center">Your Admission Point Score</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-8xl font-bold text-blue-900">${userAPS}</div>
-                        <p class="text-lg mt-2">${currentGroup === 'univen' ? 'decimal points' : 'out of ' + (currentGroup === 'wits' ? '49' : '42') + ' possible points'}</p>
-                    </div>
-                    ${univenNote}
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold mb-2">Your Subjects & Marks:</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            ${subjects.map(subject => `
-                                <div class="flex justify-between p-2 ${subject.mark < 40 && currentGroup === 'univen' ? 'bg-red-100' : 'bg-blue-100'} rounded-lg">
-                                    <span>${subject.name}</span>
-                                    <span class="font-bold">${subject.mark}% 
-                                    ${currentGroup === 'univen' ? 
-                                        `(${subject.univenPoints.toFixed(1)} pts)` : 
-                                        `(${subject.points} pts)`}
-                                    </span>
-                                </div>
-                            `).join('')}
+                allUniversities.forEach(uni => {
+                    resultsHTML += `
+                        <div class="bg-blue-100 p-3 rounded-lg border-2 border-blue-700 text-center">
+                            <div class="font-bold text-blue-900 text-lg">${uni}</div>
+                            <div class="text-3xl font-bold text-blue-800">${allCalculatedScores[uni] || 'N/A'}</div>
+                            <div class="text-xs text-blue-600">${getScoreType(uni)}</div>
                         </div>
-                    </div>
-                    <div class="text-center mt-8">
-                        <p class="text-blue-700 mb-4">Want to check your APS with other university groups?</p>
-                        <button id="compare-universities-btn" class="bg-purple-300 text-blue-900 px-6 py-3 rounded-xl category-card text-xl">
-                            Compare All Universities
-                        </button>
-                    </div>
-                `;
-                resultsContainer.appendChild(resultsDiv);
+                    `;
+                });
                 
-                document.getElementById('compare-universities-btn').addEventListener('click', showUniversityComparison);
+                resultsHTML += `</div>`;
+                resultsDiv.innerHTML = resultsHTML;
+                resultsContainer.appendChild(resultsDiv);
+            }
+            
+            function getScoreType(uni) {
+                switch(uni) {
+                    case 'NMU':
+                    case 'UCT':
+                        return 'Applicant Score (Sum of %)';
+                    case 'CPUT':
+                        return 'APS (Sum of % / 10)';
+                    case 'SU':
+                        return 'Average %';
+                    case 'RU':
+                        return 'Rhodes Points';
+                    case 'Wits':
+                        return 'Wits APS';
+                    case 'UWC':
+                        return 'UWC Points';
+                    default:
+                        return 'APS Score';
+                }
             }
 
-            function showUniversityComparison() {
-                resultsContainer.innerHTML = '';
+            function showCoursesScreen() {
+                resultsScreen.classList.add('hidden');
+                coursesScreen.classList.remove('hidden');
+                coursesScreen.classList.add('slide-in-up');
+                coursesTitle.textContent = `Course Qualifications`;
                 
-                const comparisonDiv = document.createElement('div');
-                comparisonDiv.className = 'bg-white/60 p-6 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0px_#1e3a8a] pop-in';
+                // --- NEW: Populate university filter with all 26 unis ---
+                universityFilter.innerHTML = '<option value="all">All Universities</option>';
+                allUniversities.forEach(university => {
+                    const option = document.createElement('option');
+                    option.value = university;
+                    option.textContent = university;
+                    universityFilter.appendChild(option);
+                });
                 
-                let comparisonHTML = `
-                    <h3 class="text-2xl font-bold mb-4 text-center">APS Score Comparison</h3>
-                    <p class="text-blue-700 mb-6 text-center">Your APS calculated for different university groups:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                `;
+                renderCourses();
+                universityFilter.addEventListener('change', renderCourses);
+            }
+            
+            function getSubject(name) {
+                return subjects.find(s => s.name.toLowerCase() === name.toLowerCase());
+            }
+            
+            // --- NEW: Upgraded function to check specific subject levels ---
+            function checkSubjectRequirement(course) {
+                const langPoints = Math.max(userLanguages.homeLanguage?.points || 0, userLanguages.firstAdditional?.points || 0);
                 
-                // Calculate APS for each university group
-                for (const key in universityGroups) {
-                    let aps = 0;
-                    if (key === 'wits') {
-                        // Wits: Best 7 subjects including LO
-                        const sortedSubjects = [...subjects].sort((a, b) => b.points - a.points);
-                        const topSubjects = sortedSubjects.slice(0, 7);
-                        aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                    } else if (key === 'standard') {
-                        // Standard groups: Best 6 subjects excluding LO
-                        const nonLOSubjects = subjects.filter(subject => 
-                            !subject.name.toLowerCase().includes('life orientation')
-                        );
-                        const sortedSubjects = [...nonLOSubjects].sort((a, b) => b.points - a.points);
-                        const topSubjects = sortedSubjects.slice(0, 6);
-                        aps = topSubjects.reduce((sum, subject) => sum + subject.points, 0);
-                    } else if (key === 'univen') {
-                        // Univen: Best 6 subjects excluding LO, using decimal points
-                        const nonLOSubjects = subjects.filter(subject => 
-                            !subject.name.toLowerCase().includes('life orientation')
-                        );
-                        const validSubjects = nonLOSubjects.filter(subject => subject.mark >= 40);
-                        const sortedSubjects = [...validSubjects].sort((a, b) => b.univenPoints - a.univenPoints);
-                        const topSubjects = sortedSubjects.slice(0, 6);
-                        aps = parseFloat(topSubjects.reduce((sum, subject) => sum + subject.univenPoints, 0).toFixed(1));
-                    }
+                // Check general language
+                if (course.lang && langPoints < course.lang) return false;
+                
+                // Check specific subjects
+                if(course.maths && !(getSubject('Mathematics')?.points >= course.maths)) return false;
+                if(course.mathsLit && !(getSubject('Mathematical Literacy')?.points >= course.mathsLit)) return false;
+                if(course.lifeSci && !(getSubject('Life Sciences')?.points >= course.lifeSci)) return false;
+                if(course.phySci && !(getSubject('Physical Sciences')?.points >= course.phySci)) return false;
+                if(course.acc && !(getSubject('Accounting')?.points >= course.acc)) return false;
+                
+                return true;
+            }
+
+            function renderCourses() {
+                const selectedUniversity = universityFilter.value;
+                coursesList.innerHTML = '';
+                let coursesFound = false;
+                
+                for (const faculty in courseData) {
+                    const facultyCourses = courseData[faculty].filter(course => {
+                        // --- NEW: Use the allCalculatedScores object ---
+                        const uniScore = allCalculatedScores[course.university];
+                        if (!uniScore || uniScore < course.aps) return false;
+                        
+                        if (selectedUniversity !== 'all' && course.university !== selectedUniversity) return false;
+                        
+                        // --- NEW: Check specific subject requirements ---
+                        if (!checkSubjectRequirement(course)) return false;
+                        
+                        return true;
+                    });
                     
-                    comparisonHTML += `
-                        <div class="bg-white p-4 rounded-xl border-4 border-blue-900 text-center">
-                            <h4 class="text-xl font-bold">${universityGroups[key].title}</h4>
-                            <div class="text-4xl font-bold my-3">${aps}</div>
-                            <p class="text-sm">${universityGroups[key].universities}</p>
+                    if (facultyCourses.length > 0) {
+                        coursesFound = true;
+                        const facultyDiv = document.createElement('div');
+                        facultyDiv.className = 'mb-6';
+                        facultyDiv.innerHTML = `
+                            <h4 class="text-xl font-bold mb-3 text-blue-900">${faculty}</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        `;
+                        
+                        facultyCourses.forEach(course => {
+                            facultyDiv.innerHTML += `
+                                <div class="bg-blue-100 p-4 rounded-lg border-2 border-blue-700">
+                                    <h5 class="text-lg font-bold text-blue-900">${course.name}</h5>
+                                    <div class="flex flex-wrap justify-between mt-2 text-sm">
+                                        <span class="text-green-700 font-bold">Your Score: ${allCalculatedScores[course.university]}</span>
+                                        <span class="text-red-700">Min APS: ${course.aps}</span>
+                                        <span class="text-blue-700 font-semibold">${course.university}</span>
+                                    </div>
+                                    <div class="text-xs text-blue-600 mt-2">
+                                        Req:
+                                        ${course.lang ? `Lang: ${course.lang}, ` : ''}
+                                        ${course.maths ? `Maths: ${course.maths}, ` : ''}
+                                        ${course.mathsLit ? `MathsLit: ${course.mathsLit}, ` : ''}
+                                        ${course.lifeSci ? `LifeSci: ${course.lifeSci}, ` : ''}
+                                        ${course.phySci ? `PhySci: ${course.phySci}, ` : ''}
+                                        ${course.acc ? `Acc: ${course.acc}` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        facultyDiv.innerHTML += `</div>`;
+                        coursesList.appendChild(facultyDiv);
+                    }
+                }
+                
+                // If no courses found
+                if (!coursesFound) {
+                    coursesList.innerHTML = `
+                        <div class="text-center p-6">
+                            <h3 class="text-xl font-bold text-blue-900 mb-4">No matching courses found</h3>
+                            <p class="text-blue-700">This could be because your scores are below the minimum APS, or you do not meet the specific subject requirements (e.g., Mathematics Level 5) for the courses in our database.</p>
+                            <p class="text-blue-700 mt-2">Note: This database is a sample from the uploaded prospectuses and not a complete list of all courses in South Africa.</p>
                         </div>
                     `;
                 }
-                
-                comparisonHTML += `</div>`;
-                comparisonDiv.innerHTML = comparisonHTML;
-                resultsContainer.appendChild(comparisonDiv);
             }
 
-            // Back button event listeners
+            // --- Back button event listeners ---
+            startCalculatorBtn.addEventListener('click', showCalculatorScreen);
+
             backBtn.addEventListener('click', () => {
                 calculatorScreen.classList.add('hidden');
                 homeScreen.classList.remove('hidden');
-                renderHomeScreen();
             });
 
             backToCalcBtn.addEventListener('click', () => {
@@ -601,16 +860,13 @@
                 calculatorScreen.classList.remove('hidden');
             });
 
-            checkOtherBtn.addEventListener('click', () => {
-                calculatorScreen.classList.add('hidden');
-                homeScreen.classList.remove('hidden');
-                renderHomeScreen();
+            backToResultsBtn.addEventListener('click', () => {
+                coursesScreen.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
             });
 
-            checkOtherResultsBtn.addEventListener('click', () => {
-                resultsScreen.classList.add('hidden');
-                homeScreen.classList.remove('hidden');
-                renderHomeScreen();
+            checkCoursesBtn.addEventListener('click', () => {
+                showCoursesScreen();
             });
 
             // Initialize the app
@@ -619,7 +875,6 @@
     </script>
 </body>
 </html>
-
 
 
 
